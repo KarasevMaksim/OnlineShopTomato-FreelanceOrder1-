@@ -1,0 +1,5 @@
+{% if type_error == 404 %}
+  <h1> Ошибка {{ type_error }} Страница не найдена! </h1>
+{% elif type_error == 500 %}
+  <h1> Ошибка {{ type_error }} Ошибка сервера! </h1>
+{% endif %}
