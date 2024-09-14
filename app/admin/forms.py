@@ -33,16 +33,13 @@ class AddProductForm(FlaskForm):
     name = StringField('Логин', validators=
                        [DataRequired(message="Поле не может быть пустым"),
                         Length(min=1, max=300),
-                        Regexp(r'^[a-zA-Zа-яА-Я0-9_-:;]+$', message="only aA1_-:;")
+                        Regexp(r'^[a-zA-Zа-яА-Я0-9_\-:;]+$', message="only aA1_-:;")
                         ])
     
     about = StringField('Описание', validators=[Length(min=1, max=10000)])
     
     prise = StringField('Цена', validators=[Length(min=10, max=20)])
     
-    select_section = SelectField('Категория товара', choices=
-                                 list(map(
-                                     lambda i: (i.name, i.name),
-                                     Sections.query.all()
-                                     )))
+    select_section = SelectField('Категория товара', choices=[])
     
+    submit = SubmitField('Применить')    
