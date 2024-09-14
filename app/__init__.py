@@ -17,7 +17,7 @@ def create_app(config_class=Config):
     
     db.init_app(app)
     migrate.init_app(app, db)
-    # login.init_app(app)
+    login.init_app(app)
     
     # registration blueprints
     from app.main import bp as main_bp
