@@ -9,7 +9,10 @@ from app import db, login
 
 class Users(UserMixin, db.Model):
     __tablename__ = 'user'
-    id: so.Mapped[int] = so.mapped_column(primary_key=True)
+    id: so.Mapped[int] = so.mapped_column(
+        primary_key=True,
+        autoincrement=True
+    )
     name: so.Mapped[str] = so.mapped_column(sa.String(10), unique=True)
     password: so.Mapped[Optional[str]] = so.mapped_column(sa.String(256))
     is_admin: so.Mapped[bool] = so.mapped_column(default=False)
@@ -34,7 +37,10 @@ class Users(UserMixin, db.Model):
 
 class Sections(db.Model):
     __tablename__ = 'section'
-    id: so.Mapped[int] = so.mapped_column(primary_key=True)
+    id: so.Mapped[int] = so.mapped_column(
+        primary_key=True,
+        autoincrement=True
+    )
     name: so.Mapped[str] = so.mapped_column(sa.String(100))
 
     sec_products: so.Mapped[list['Products']] = so.relationship(
@@ -49,8 +55,12 @@ class Sections(db.Model):
 
 class Products(db.Model):
     __tablename__ = 'product'
-    id: so.Mapped[int] = so.mapped_column(primary_key=True)
+    id: so.Mapped[int] = so.mapped_column(
+        primary_key=True,
+        autoincrement=True
+    )
     name: so.Mapped[str] = so.mapped_column(sa.String(300))
+    price: so.Mapped[int] = so.mapped_column(sa.Integer)
     about: so.Mapped[Optional[str]] = so.mapped_column(sa.Text)
     link: so.Mapped[Optional[str]] = so.mapped_column(sa.String(100))
     is_active: so.Mapped[bool] = so.mapped_column(default=True)
