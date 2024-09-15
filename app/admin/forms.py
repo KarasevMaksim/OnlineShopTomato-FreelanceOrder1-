@@ -14,18 +14,18 @@ from config import Config
 
 
 class LoginForm(FlaskForm):
-    name = StringField('Логин', validators=
+    name = StringField('Логин: ', validators=
                        [DataRequired(message="Поле не может быть пустым"),
-                        Length(min=1, max=20),
+                        Length(min=1, max=10),
                         Regexp(r'^[a-zA-Zа-яА-Я0-9_]+$', message="only aA1_")
                         ])
     
-    password = PasswordField('Пароль', validators=
+    password = PasswordField('Пароль: ', validators=
                              [DataRequired(message='Поле не может быть пустым!'),
                               Length(min=6, max=18)
                               ])
     
-    remember_me = BooleanField('Запомнить меня')
+    remember_me = BooleanField('Запомнить меня: ')
     
     submit = SubmitField('Войти')
     
