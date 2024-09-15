@@ -2,7 +2,8 @@ import re
 
 from flask_wtf import FlaskForm
 from wtforms import (
-    StringField, PasswordField, BooleanField, SelectField, SubmitField
+    StringField, PasswordField, BooleanField, SelectField, SubmitField,
+    TextAreaField, FileField
 )
 from wtforms.validators import (
     ValidationError, DataRequired, Length, Regexp
@@ -30,16 +31,20 @@ class LoginForm(FlaskForm):
     
     
 class AddProductForm(FlaskForm):
-    name = StringField('Логин', validators=
+    name = StringField('Название товара: ', validators=
                        [DataRequired(message="Поле не может быть пустым"),
                         Length(min=1, max=300),
-                        Regexp(r'^[a-zA-Zа-яА-Я0-9_\-:;]+$', message="only aA1_-:;")
+                        Regexp(r'^[a-zA-Zа-яА-Я0-9_\-:;]+$', message=
+                               "only aA1_-:;")
                         ])
     
-    about = StringField('Описание', validators=[Length(min=1, max=10000)])
+    about = TextAreaField('Описание товара: ', validators=
+                          [Length(min=1, max=10000)])
     
-    prise = StringField('Цена', validators=[Length(min=10, max=20)])
+    prise = StringField('Цена товара: ', validators=[Length(min=10, max=20)])
     
-    select_section = SelectField('Категория товара', choices=[])
+    select_section = SelectField('Категория товара: ', choices=[])
+    
+    upload = FileField('Загрузить изображение: ')
     
     submit = SubmitField('Применить')    

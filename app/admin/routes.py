@@ -13,7 +13,6 @@ def admin():
     form = AddProductForm()
     
     if request.method == "POST":
-        print(333)
         print('\n\n', form.select_section.data, '\n\n')
         return redirect(url_for('admin.admin'))
     if request.method == "GET":
