@@ -1,6 +1,13 @@
 <div>
+    <a href="{{ url_for('admin.logout') }}">Выйти из админ панели</a>
+</div>
+<div>
+    <a href="{{ url_for('admin.add_sections') }}">Редактировать категории</a>
+</div>
+<div>
   <h2> Добавить новый товар </h2>  
   <form action="" method="post" enctype="multipart/form-data">
+    {{ form.hidden_tag() }}
     <p>
       {{ form.select_section.label }} 
       {{ form.select_section }}
@@ -10,16 +17,16 @@
       {{ form.name }}
     </p>
     <p>
-        {{ form.prise.label }}
-        {{ form.prise }}
+      {{ form.price.label }}
+      {{ form.price }}
     </p>
     <p>
-        {{ form.about.label }} <br>
-        {{ form.about }}
+      {{ form.about.label }} <br>
+      {{ form.about }}
     </p>
     <p>
-        {{ form.upload.label }} <br>
-        {{ form.upload }}
+      {{ form.upload.label }} <br>
+      {{ form.upload }}
     </p>
     <p>
       {{ form.submit }}
