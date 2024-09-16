@@ -86,6 +86,7 @@ def add_sections():
         return abort(403)
     
     form = AddSectionsForm()
+    show_sections = Sections.query.all()[::-1]
 
     if form.validate_on_submit():
         sections = Sections()
@@ -101,5 +102,6 @@ def add_sections():
 
     return render_template(
         'admin/add_sections.html',
+        show_sections=show_sections,
         form=form,
     )

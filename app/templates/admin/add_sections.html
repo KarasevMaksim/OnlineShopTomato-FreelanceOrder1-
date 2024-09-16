@@ -1,3 +1,8 @@
+{% extends 'admin/base.html' %}
+
+
+{% block content %}
+
 <div>
   <h2> Добавить новую категорию </h2>  
   <form action="" method="post" enctype="multipart/form-data">
@@ -21,3 +26,29 @@
     {% endfor %}
   </form>
 </div>
+<div>
+  <h3>Список Категорий!</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Категория</th>
+        <th>Действие</th>
+      </tr>
+    </thead>
+    {% for sec in show_sections %}
+      <tbody>
+        <tr>
+          <td>{{ sec.name.capitalize() }}</td>
+          <td>
+            <ul>
+              <li>Удалить</li>
+              <li>Редактировать</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    {% endfor %}
+  </table>
+</div>
+
+{% endblock %}
