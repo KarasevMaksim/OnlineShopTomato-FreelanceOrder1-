@@ -17,6 +17,7 @@ def admin():
     
     sections = [(i.name, i.name.capitalize()) for i in Sections.query.all()]
     form = AddProductForm()
+    show_products = Products.query.all()[::-1]
     
     form.select_section.choices.extend(sections)
     
@@ -47,6 +48,7 @@ def admin():
         
     return render_template(
         'admin/admin.html',
+        show_products = show_products,
         form=form,
     )
 
