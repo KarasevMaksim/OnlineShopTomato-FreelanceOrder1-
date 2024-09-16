@@ -21,7 +21,7 @@ def save_product_img(picture_name, sections_name):
     if not os.path.exists(full_path):
         os.makedirs(full_path)
         
-    path_to_db = os.path.join('img', 'products', sections_name).replace('\\', '/')
+    path_to_db = os.path.join('img', 'products', sections_name, new_picture_name).replace('\\', '/')
     path_to_save = os.path.join(full_path, new_picture_name)
     return path_to_save, path_to_db
 
