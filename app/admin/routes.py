@@ -88,7 +88,15 @@ def add_sections():
     form = AddSectionsForm()
 
     if form.validate_on_submit():
-        print('\n\n', form.name.data, '\n\n')
+        sections = Sections()
+        try:
+            sections.name = form.name.data.lower()
+            db.session.add(sections)
+            db.session.commit()
+        except Exception as err:
+            db.session.rollback()
+            print(err)
+        flash('Категория успешно добавлена!')
         return redirect(url_for('admin.add_sections'))
 
     return render_template(

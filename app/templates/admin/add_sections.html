@@ -14,5 +14,10 @@
     <p>
       {{ form.submit }}
     </p>
+    {% for message in get_flashed_messages() %}
+      <div class="alert alert-danger" style="color: red;" role="alert">
+        {{ message }}
+      </div>
+    {% endfor %}
   </form>
 </div>
