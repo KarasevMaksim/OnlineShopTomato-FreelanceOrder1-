@@ -5,7 +5,7 @@ from flask_login import (
     current_user, login_user, logout_user, login_required
 )
 from app import db, login
-from app.models import Sections, Users
+from app.models import Sections, Users, Products
 
 
 @bp.route('/', methods=['GET', 'POST'])
@@ -20,7 +20,21 @@ def admin():
     form.select_section.choices.extend(sections)
     
     if form.validate_on_submit():
-        print('\n\n', form.select_section.data, '\n\n')
+        try:
+            db_sections = Sections().query.filter(
+                Sections.name == form.name.data.lower()
+            ).first()
+            
+            product = Products()
+            product.section_id = db_sections.id
+            product.name = form.name.data
+            product.price = form.price.data
+            if form.about.data:
+                product.about = form.about.data
+            # product.img_link = save_img()
+        except Exception as err:
+            db.session.rollback()
+            print(err)
         return redirect(url_for('admin.admin'))
         
     return render_template(
@@ -42,9 +56,7 @@ def login():
             return redirect(url_for('admin.admin'))
         
         flash('Не верный логин или пароль!')
-        print('\n\n')
         return redirect(url_for('admin.login'))
-            
     
     return render_template(
         'admin/login.html',
