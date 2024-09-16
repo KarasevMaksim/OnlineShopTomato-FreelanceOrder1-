@@ -6,6 +6,7 @@ from flask_login import (
 )
 from app import db, login
 from app.models import Sections, Users, Products
+from app.admin.funcs import save_product_img, resized_image
 
 
 @bp.route('/', methods=['GET', 'POST'])
@@ -20,9 +21,10 @@ def admin():
     form.select_section.choices.extend(sections)
     
     if form.validate_on_submit():
+        sections_name = form.select_section.data.lower()
         try:
             db_sections = Sections().query.filter(
-                Sections.name == form.name.data.lower()
+                Sections.name == sections_name
             ).first()
             
             product = Products()
@@ -31,7 +33,13 @@ def admin():
             product.price = form.price.data
             if form.about.data:
                 product.about = form.about.data
-            # product.img_link = save_img()
+            file_img = form.upload.data
+            path_to_save, path_to_db = save_product_img(file_img.filename, sections_name)
+            file_img = resized_image(file_img)
+            file_img.save(path_to_save)
+            product.img_link = path_to_db
+            db.session.add(product)
+            db.session.commit()
         except Exception as err:
             db.session.rollback()
             print(err)
