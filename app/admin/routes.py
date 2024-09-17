@@ -107,3 +107,29 @@ def add_sections():
         show_sections=show_sections,
         form=form,
     )
+
+
+@bp.route('/delete', methods=['POST'])
+@login_required
+def delete():
+    if current_user.is_admin:
+        confirm = request.form.get('confirm')
+        if confirm:
+            what_del = request.form.get('type')
+            if what_del == 'product':
+                product_id = request.form.get('get-id')
+                product = Products().query.filter(
+                    Products.id == product_id
+                ).first()
+                if product:
+                    try:
+                        db.session.delete(product)
+                        db.session.commit()
+                    except Exception as err:
+                        db.session.rollback()
+                        print(err)
+                
+            return redirect(url_for('admin.admin'))
+
+        return redirect(url_for('admin.admin'))            
+    return abort(403)

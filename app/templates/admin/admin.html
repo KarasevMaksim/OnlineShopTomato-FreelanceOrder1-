@@ -55,6 +55,14 @@
       Описание: <br>
       {{ product.about }}
     </p>
+    <div>
+      <form action="{{ url_for('admin.delete')}}" method="post">
+        <input type="hidden" name="type" value="product">
+        <input type="hidden" name="get-id" value="{{ product.id }}">
+        <input type="checkbox" name="confirm" value="1">
+        <input type="submit" value="Удалить">
+      </form>
+    </div>
     <p>
       <img src="{{ url_for('static', filename=product.img_link) }}" alt="ImgError"/>
     </p>
