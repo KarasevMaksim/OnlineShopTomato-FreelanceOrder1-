@@ -114,8 +114,8 @@ def add_sections():
 def delete():
     if current_user.is_admin:
         confirm = request.form.get('confirm')
+        what_del = request.form.get('type')
         if confirm:
-            what_del = request.form.get('type')
             if what_del == 'product':
                 product_id = request.form.get('get-id')
                 product = Products().query.filter(
@@ -130,11 +130,30 @@ def delete():
                         print(err)
                         flash("Не удалось выполнить операцию!\nПроверьте корректность вводимых данных!")
                         return redirect(url_for('admin.admin'))
+                    
+            elif what_del == 'sections':
+                section_id = request.form.get('get-id')
+                section = Sections.query.filter(
+                    Sections.id == section_id
+                ).first()
+                if section:
+                    try:
+                        db.session.delete(section)
+                        db.session.commit()
+                    except Exception as err:
+                        db.session.rollback()
+                        print(err)
+                        flash('Не удалось выполнить операцию\nПроверьте корректность вводимых данных!')
+                        return redirect(url_for('admin.add_sections'))        
             
             flash("Удаление выполнено успешно!")
+            if what_del == 'sections':
+                return redirect(url_for('admin.add_sections'))
             return redirect(url_for('admin.admin'))
         
         flash('Перед удалением отметьте подтверждение!')
+        if what_del == 'sections':
+            return redirect(url_for('admin.add_sections'))
         return redirect(url_for('admin.admin'))   
              
     return abort(403)
