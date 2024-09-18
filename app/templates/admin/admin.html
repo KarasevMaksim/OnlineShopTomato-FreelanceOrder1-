@@ -40,6 +40,13 @@
 </div>
 <br>
 <div>
+  {% for message in get_flashed_messages() %}
+    <div class="alert alert-danger" style="color: red;" role="alert">
+      {{ message }}
+    </div>
+  {% endfor %}
+</div>
+<div>
   {% for product in show_products %}
     <h3>id:{{ product.id }} {{ product.name }}</h3>
     <p>

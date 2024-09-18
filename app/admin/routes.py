@@ -128,8 +128,13 @@ def delete():
                     except Exception as err:
                         db.session.rollback()
                         print(err)
-                
+                        flash("Не удалось выполнить операцию!\nПроверьте корректность вводимых данных!")
+                        return redirect(url_for('admin.admin'))
+            
+            flash("Удаление выполнено успешно!")
             return redirect(url_for('admin.admin'))
-
-        return redirect(url_for('admin.admin'))            
+        
+        flash('Перед удалением отметьте подтверждение!')
+        return redirect(url_for('admin.admin'))   
+             
     return abort(403)
