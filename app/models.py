@@ -66,7 +66,8 @@ class Products(db.Model):
     img_link: so.Mapped[str] = so.mapped_column(sa.String(100))
     is_active: so.Mapped[bool] = so.mapped_column(default=True)
 
-    section_id: so.Mapped[int] = so.mapped_column(sa.ForeignKey('section.id'))
+    section_id: so.Mapped[int] = so.mapped_column(
+        sa.ForeignKey('section.id', ondelete='CASCADE'))
     sections: so.Mapped['Sections'] = so.relationship(
         passive_deletes=True,
         back_populates='sec_products'
