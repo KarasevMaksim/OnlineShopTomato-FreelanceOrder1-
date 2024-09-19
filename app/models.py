@@ -32,7 +32,7 @@ class Users(UserMixin, db.Model):
     
     
     def __repr__(self) -> str:
-        return f"class Users: {self.name}"
+        return f'class Users: {self.name}'
 
 
 class Sections(db.Model):
@@ -42,15 +42,45 @@ class Sections(db.Model):
         autoincrement=True
     )
     name: so.Mapped[str] = so.mapped_column(sa.String(100))
-
-    sec_products: so.Mapped[list['Products']] = so.relationship(
-        passive_deletes=True,
-        back_populates='sections'
+    sub_sections: so.Mapped[list['SubSections']] = so.relationship(
+        'SubSections',
+        back_populates='section',
+        cascade='all, delete-orphan'
+    )
+    products: so.Mapped[list['Products']] = so.relationship(
+        'Products',
+        secondary='sub_section',
+        back_populates='section'
     )
 
     
     def __repr__(self) -> str:
-        return f"class Sections: {self.name}"
+        return f'class Sections: {self.name}'
+    
+    
+class SubSections(db.Model):
+    __tablename__ = 'sub_section'
+    id: so.Mapped[int] = so.mapped_column(
+        primary_key=True,
+        autoincrement=True
+    )
+    name: so.Mapped[str] = so.mapped_column(sa.String(100))
+
+    section_id: so.Mapped[int] = so.mapped_column(
+        sa.ForeignKey('section.id', ondelete='CASCADE')
+    )
+    section: so.Mapped['Sections'] = so.relationship(
+        'Sections',
+        back_populates='sub_sections'
+    )
+    products: so.Mapped[list['Products']] = so.relationship(
+        'Products', back_populates='sub_section',
+        cascade='all, delete-orphan'
+    )
+
+    
+    def __repr__(self) -> str:
+        return f'class SubSections: {self.name}'
     
 
 class Products(db.Model):
@@ -66,14 +96,20 @@ class Products(db.Model):
     img_link: so.Mapped[str] = so.mapped_column(sa.String(100))
     is_active: so.Mapped[bool] = so.mapped_column(default=True)
 
-    section_id: so.Mapped[int] = so.mapped_column(
-        sa.ForeignKey('section.id', ondelete='CASCADE'))
-    sections: so.Mapped['Sections'] = so.relationship(
-        passive_deletes=True,
-        back_populates='sec_products'
+    sub_section_id: so.Mapped[int] = so.mapped_column(
+        sa.ForeignKey('sub_section.id', ondelete='CASCADE')
+    )
+    sub_section: so.Mapped['SubSections'] = so.relationship(
+        'SubSections',
+        back_populates='products'
+    )
+    section: so.Mapped['Sections'] = so.relationship(
+        'Sections',
+        secondary='sub_section',
+        back_populates='products'
     )
 
     
     def __repr__(self) -> str:
-        return f"class Product {self.name}"
+        return f'class Product {self.name}'
     
