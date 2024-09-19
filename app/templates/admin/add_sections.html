@@ -1,0 +1,66 @@
+{% extends 'admin/base.html' %}
+
+
+{% block content %}
+
+<div>
+  <h2> Добавить новую категорию </h2>  
+  <form action="" method="post" enctype="multipart/form-data">
+    {{ form.hidden_tag() }}
+    <p>
+      {{ form.name.label }}
+      {{ form.name }}
+      {% for error in form.name.errors %}
+        <div class="alert alert-danger" style="color: red;" role="alert">
+          {{ error }}
+        </div>
+      {% endfor %}
+    </p>
+    <p>
+      {{ form.submit }}
+    </p>
+    {% for message in get_flashed_messages() %}
+      <div class="alert alert-danger" style="color: red;" role="alert">
+        {{ message }}
+      </div>
+    {% endfor %}
+  </form>
+</div>
+<div>
+  <h3>Список Категорий!</h3>
+  <h4 style="color: red">
+    Внимание! При удалении категории, также удаляются все товары, которые были в данной категории!
+  </h4>
+  <table>
+    <thead>
+      <tr>
+        <th>Категория</th>
+        <th>Действие</th>
+      </tr>
+    </thead>
+    {% for section in show_sections %}
+      <tbody>
+        <tr>
+          <td>{{ section.name.capitalize() }}</td>
+          <td>
+            <ul>
+              <li>
+                <div>
+                  <form action="{{ url_for('admin.delete')}}" method="post">
+                    <input type="hidden" name="type" value="sections">
+                    <input type="hidden" name="get-id" value="{{ section.id }}">
+                    <input type="checkbox" name="confirm" value="1">
+                    <input type="submit" value="Удалить">
+                  </form>
+                </div>
+              </li>
+              <li>Редактировать</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    {% endfor %}
+  </table>
+</div>
+
+{% endblock %}
