@@ -157,3 +157,38 @@ def delete():
         return redirect(url_for('admin.admin'))   
              
     return abort(403)
+
+
+@bp.route('/update-product-status', methods=['POST'])
+@login_required
+def update_product_status():
+    if current_user.is_admin:
+        confirm = request.form.get('confirm')
+        product_id = request.form.get('get-id')
+        if confirm:
+            product = Products().query.filter(
+                Products.id == product_id
+            ).first()
+            if product:
+                is_active = product.is_active
+                try:
+                    product.is_active = not is_active
+                    db.session.add(product)
+                    db.session.commit()
+                except Exception as err:
+                    db.session.rollback()
+                    print(err)
+                    flash("Не удалось выполнить операцию!\nПроверьте корректность вводимых данных!")
+                    return redirect(url_for('admin.admin'))
+                
+                flash('Статус наличия продукта изменен!')
+                return redirect(url_for('admin.admin'))
+            
+            flash('Продкут не найден!')
+            return redirect(url_for('admin.admin'))
+
+        flash('Перед изменением отметьте подтверждение!')
+        return redirect(url_for('admin.admin'))
+    
+    return abort(403)
+    

@@ -53,7 +53,12 @@
       Цена: {{ product.price }} за 1 уп.
     </p>
     <p>
-      В наличии: {% if product.is_active %} Да {% else %} Нет {% endif %}
+      <form action="{{ url_for('admin.update_product_status')}}" method="post">
+        В наличии: {% if product.is_active %} Да {% else %} Нет {% endif %}
+        <input type="hidden" name="get-id" value="{{ product.id }}">
+        <input type="checkbox" name="confirm" value="1">
+        <input type="submit" value="Изменить">
+      </form>
     </p>
     <p>
       Категория: {{ product.sections.name.capitalize() }}
