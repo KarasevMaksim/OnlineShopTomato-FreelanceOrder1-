@@ -13,7 +13,7 @@ class Users(UserMixin, db.Model):
         primary_key=True,
         autoincrement=True
     )
-    name: so.Mapped[str] = so.mapped_column(sa.String(10), unique=True)
+    name: so.Mapped[str] = so.mapped_column(sa.String(11), unique=True)
     password: so.Mapped[Optional[str]] = so.mapped_column(sa.String(256))
     is_admin: so.Mapped[bool] = so.mapped_column(default=False)
     
@@ -49,7 +49,7 @@ class Sections(db.Model):
     )
     products: so.Mapped[list['Products']] = so.relationship(
         'Products',
-        secondary='sub_section',
+        secondary='section_product_association',
         back_populates='section'
     )
 
@@ -74,7 +74,8 @@ class SubSections(db.Model):
         back_populates='sub_sections'
     )
     products: so.Mapped[list['Products']] = so.relationship(
-        'Products', back_populates='sub_section',
+        'Products',
+        back_populates='sub_section',
         cascade='all, delete-orphan'
     )
 
@@ -105,7 +106,7 @@ class Products(db.Model):
     )
     section: so.Mapped['Sections'] = so.relationship(
         'Sections',
-        secondary='sub_section',
+        secondary='section_product_association',
         back_populates='products'
     )
 
@@ -113,3 +114,15 @@ class Products(db.Model):
     def __repr__(self) -> str:
         return f'class Product {self.name}'
     
+
+class SectionProductAssociation(db.Model):
+    __tablename__ = 'section_product_association'
+    
+    section_id: so.Mapped[int] = so.mapped_column(
+        sa.ForeignKey('section.id'),
+        primary_key=True
+    )
+    product_id: so.Mapped[int] = so.mapped_column(
+        sa.ForeignKey('product.id'),
+        primary_key=True
+    )
