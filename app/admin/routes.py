@@ -8,7 +8,9 @@ from flask_login import (
 )
 from app import db, login
 from app.models import Sections, SubSections, Users, Products
-from app.admin.funcs import save_product_img, resized_image
+from app.admin.funcs import (
+    save_product_img, resized_image, delete_paths_to_img, delete_product_img
+)
 
 
 @bp.route('/', methods=['GET', 'POST'])
@@ -160,8 +162,10 @@ def delete():
                 ).first()
                 if product:
                     try:
+                        product_img = url_for('static', filename=product.img_link)
                         db.session.delete(product)
                         db.session.commit()
+                        delete_product_img(product_img)
                     except Exception as err:
                         db.session.rollback()
                         print(err)
@@ -175,8 +179,13 @@ def delete():
                 ).first()
                 if section:
                     try:
+                        img_paths = map(
+                            lambda item: f'/static/img/products/{item.name}',
+                            section.sub_sections
+                        )
                         db.session.delete(section)
                         db.session.commit()
+                        delete_paths_to_img(img_paths)
                     except Exception as err:
                         db.session.rollback()
                         print(err)
@@ -190,8 +199,10 @@ def delete():
                 ).first()
                 if sub_section:
                     try:
+                        section_name = sub_section.name
                         db.session.delete(sub_section)
                         db.session.commit()
+                        delete_paths_to_img([f'/static/img/products/{section_name}'])
                     except Exception as err:
                         db.session.rollback()
                         print(err)

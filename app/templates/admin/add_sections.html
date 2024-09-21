@@ -80,7 +80,7 @@
             </ul>
           </td>
           <td>
-            {% for sub_section in section.sub_sections %}
+            {% for sub_section in section.sub_sections[::-1] %}
             {{ sub_section.name.capitalize() }}
             <ul>
               <li>
