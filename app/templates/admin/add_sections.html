@@ -57,14 +57,14 @@
     <thead>
       <tr>
         <th>Категория</th>
-        <th>Действие</th>
+        <th>Подкатегория</th>
       </tr>
     </thead>
     {% for section in show_sections %}
       <tbody>
         <tr>
-          <td>{{ section.name.capitalize() }}</td>
           <td>
+            {{ section.name.capitalize() }}
             <ul>
               <li>
                 <div>
@@ -78,6 +78,24 @@
               </li>
               <li>Редактировать</li>
             </ul>
+          </td>
+          <td>
+            {% for sub_section in section.sub_sections %}
+            {{ sub_section.name.capitalize() }}
+            <ul>
+              <li>
+                <div>
+                  <form action="{{ url_for('admin.delete')}}" method="post">
+                    <input type="hidden" name="type" value="sections">
+                    <input type="hidden" name="get-id" value="{{ section.id }}">
+                    <input type="checkbox" name="confirm" value="1">
+                    <input type="submit" value="Удалить">
+                  </form>
+                </div>
+              </li>
+              <li>Редактировать</li>
+            </ul>
+            {% endfor %}
           </td>
         </tr>
       </tbody>
