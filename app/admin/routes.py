@@ -18,30 +18,36 @@ def admin():
         return abort(403)
     
     sections = [(i.name, i.name.capitalize()) for i in Sections.query.all()]
+    sub_sections = [(i.name, i.name.capitalize()) for i in SubSections.query.all()]
     form = AddProductForm()
     show_products = Products.query.all()[::-1]
     
     form.select_section.choices.extend(sections)
+    form.select_sub_section.choices.extend(sub_sections)
     
     if form.validate_on_submit():
-        sections_name = form.select_section.data.lower()
+        sub_sections_name = form.select_sub_section.data.lower()
         try:
-            db_sections = Sections().query.filter(
-                Sections.name == sections_name
+            db_sub_sections = SubSections().query.filter(
+                SubSections.name == sub_sections_name
             ).first()
             
             product = Products()
-            product.section_id = db_sections.id
             product.name = form.name.data
             product.price = form.price.data
             if form.about.data:
                 product.about = form.about.data
             file_img = form.upload.data
-            path_to_save, path_to_db = save_product_img(file_img.filename, sections_name)
+            path_to_save, path_to_db = save_product_img(
+                file_img.filename,
+                sub_sections_name
+            )
             file_img = resized_image(file_img)
             file_img.save(path_to_save)
             product.img_link = path_to_db
-            db.session.add(product)
+            db_sub_sections.products.append(product)
+            db_sub_sections.section.products.append(product)
+            db.session.add(db_sub_sections)
             db.session.commit()
         except Exception as err:
             db.session.rollback()

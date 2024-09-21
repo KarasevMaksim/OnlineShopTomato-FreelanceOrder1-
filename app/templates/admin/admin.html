@@ -18,6 +18,10 @@
       {{ form.select_section }}
     </p>
     <p>
+      {{ form.select_sub_section.label }} 
+      {{ form.select_sub_section }}
+    </p>
+    <p>
       {{ form.name.label }}
       {{ form.name }}
     </p>
@@ -61,12 +65,20 @@
       </form>
     </p>
     <p>
-      Категория: {{ product.sections.name.capitalize() }}
+      Категория: {{ product.section.name.capitalize() }}
     </p>
     <p>
-      Описание: <br>
-      {{ product.about }}
+      Подкатегория: {{ product.sub_section.name.capitalize() }}
     </p>
+    <p>
+      {% if product.about %}
+        Описание: <br>
+        {{ product.about }}
+      {% else %}
+        Описание: <br>
+        Отсутствует
+      {% endif %}
+  </p>
     <div>
       <form action="{{ url_for('admin.delete')}}" method="post">
         <input type="hidden" name="type" value="product">
