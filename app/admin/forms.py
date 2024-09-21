@@ -15,7 +15,7 @@ from config import Config
 
 class LoginForm(FlaskForm):
     name = StringField('Логин: ', validators=
-                       [DataRequired(message="Поле не может быть пустым"),
+                       [DataRequired(message='Поле не может быть пустым'),
                         Length(min=1, max=10),
                         Regexp(r'^[a-zA-Zа-яА-Я0-9_]+$', message="only aA1_")
                         ])
@@ -32,7 +32,7 @@ class LoginForm(FlaskForm):
     
 class AddProductForm(FlaskForm):
     name = StringField('Название товара: ', validators=
-                       [DataRequired(message="Поле не может быть пустым"),
+                       [DataRequired(message='Поле не может быть пустым'),
                         Length(min=1, max=300)
                         ])
     
@@ -42,7 +42,7 @@ class AddProductForm(FlaskForm):
                            ])
     
     price = StringField('Цена товара: ', validators=
-                        [DataRequired(message="Поле не может быть пустым"),
+                        [DataRequired(message='Поле не может быть пустым'),
                          Length(min=1, max=20)
                          ])
     
@@ -55,13 +55,24 @@ class AddProductForm(FlaskForm):
 
 class AddSectionsForm(FlaskForm):
     name = StringField('Название Категории: ', validators=[
-        DataRequired(message="Поле не может быть пустым"),
+        DataRequired(message='Поле не может быть пустым'),
         Length(min=1, max=300)
     ])
 
-    submit = SubmitField('Применить')
+    submit = SubmitField('Добавить')
 
     def validate_name(self, name):
         sections = Sections.query.filter(Sections.name == name.data.lower()).first()
         if sections:
             raise ValidationError('Данная категория уже существует!')
+
+
+class AddSubSectionsForm(FlaskForm):
+    name = StringField('Название подакатегории: ', validators=[
+        DataRequired(message='Поле не может быть пустым'),
+        Length(min=1, max=300)
+    ])
+    
+    select_section = SelectField('Выбирите основную категорию!: ', choices=[])
+    
+    submit = SubmitField('Добавить')
