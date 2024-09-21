@@ -19,17 +19,16 @@
     <p>
       {{ form1.submit }}
     </p>
-    {% for message in get_flashed_messages() %}
-      <div class="alert alert-danger" style="color: red;" role="alert">
-        {{ message }}
-      </div>
-    {% endfor %}
   </form>
 </div>
 <div>
   <h2> Добавить новую подкатегорию </h2>
   <form action="" method="post">
     {{ form2.hidden_tag() }}
+    <p>
+      {{ form2.select_section.label }}
+      {{ form2.select_section }}
+    </p>
     <p>
       {{ form2.name.label }}
       {{ form2.name }}
@@ -42,12 +41,12 @@
     <p>
       {{ form2.submit }}
     </p>
-    {% for message in get_flashed_messages() %}
-      <div class="alert alert-danger" style="color: red;" role="alert">
-        {{ message }}
-      </div>
-    {% endfor %}
   </form>
+  {% for message in get_flashed_messages() %}
+    <div class="alert alert-danger" style="color: green;" role="alert">
+      {{ message }}
+    </div>
+  {% endfor %}
 </div>
 <div>
   <h3>Список Категорий!</h3>

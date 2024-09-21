@@ -1,11 +1,13 @@
 from flask import render_template, request, url_for, redirect, flash, abort
-from app.admin.forms import AddProductForm, AddSectionsForm, LoginForm
+from app.admin.forms import (
+    AddProductForm, AddSectionsForm, AddSubSectionsForm, LoginForm
+)
 from app.admin import bp
 from flask_login import (
     current_user, login_user, logout_user, login_required
 )
 from app import db, login
-from app.models import Sections, Users, Products
+from app.models import Sections, SubSections, Users, Products
 from app.admin.funcs import save_product_img, resized_image
 
 
@@ -87,25 +89,54 @@ def add_sections():
     if not current_user.is_admin:
         return abort(403)
     
-    form = AddSectionsForm()
+    form1 = AddSectionsForm()
+    form2 = AddSubSectionsForm()
+    
     show_sections = Sections.query.all()[::-1]
+    sections_for_form = [(i.name, i.name.capitalize()) for i in show_sections]
+    form2.select_section.choices.extend(sections_for_form)
 
-    if form.validate_on_submit():
+    if form1.validate_on_submit() and \
+        request.form.get('submit') == 'Add Category':
         sections = Sections()
         try:
-            sections.name = form.name.data.lower()
+            sections.name = form1.name.data.lower()
             db.session.add(sections)
             db.session.commit()
         except Exception as err:
             db.session.rollback()
             print(err)
+        
+        flash('Категория успешно добавлена!')
+        return redirect(url_for('admin.add_sections'))
+    
+    elif form2.validate_on_submit() and \
+        request.form.get('submit') == 'Add SubCategory':
+        try:
+            section_name = form2.select_section.data.lower()
+            sub_section_name = form2.name.data.lower()
+            
+            section = Sections().query.filter(
+                    Sections.name == section_name
+            ).first()
+            sub_section = SubSections()
+            sub_section.name = sub_section_name
+            section.sub_sections.append(sub_section)
+            db.session.add(section)
+            db.session.commit()
+        except Exception as err:
+            db.session.rollback()
+            print(err)
+            return redirect(url_for('admin.add_sections'))
+        
         flash('Категория успешно добавлена!')
         return redirect(url_for('admin.add_sections'))
 
     return render_template(
         'admin/add_sections.html',
         show_sections=show_sections,
-        form=form,
+        form1=form1,
+        form2=form2
     )
 
 

@@ -9,7 +9,7 @@ from wtforms.validators import (
     ValidationError, DataRequired, Length, Regexp, Optional
 )
 from app import db
-from app.models import Users, Sections, Products
+from app.models import Users, Sections, SubSections, Products
 from config import Config
 
 
@@ -59,7 +59,7 @@ class AddSectionsForm(FlaskForm):
         Length(min=1, max=300)
     ])
 
-    submit = SubmitField('Добавить')
+    submit = SubmitField('Add Category')
 
     def validate_name(self, name):
         sections = Sections.query.filter(Sections.name == name.data.lower()).first()
@@ -75,4 +75,10 @@ class AddSubSectionsForm(FlaskForm):
     
     select_section = SelectField('Выбирите основную категорию!: ', choices=[])
     
-    submit = SubmitField('Добавить')
+    submit = SubmitField('Add SubCategory')
+
+
+    def validate_name(self, name):
+        sub_sections = SubSections.query.filter(SubSections.name == name.data.lower()).first()
+        if sub_sections:
+            raise ValidationError('Данная подкатегория уже существует!')
