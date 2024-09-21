@@ -86,8 +86,8 @@
               <li>
                 <div>
                   <form action="{{ url_for('admin.delete')}}" method="post">
-                    <input type="hidden" name="type" value="sections">
-                    <input type="hidden" name="get-id" value="{{ section.id }}">
+                    <input type="hidden" name="type" value="subsections">
+                    <input type="hidden" name="get-id" value="{{ sub_section.id }}">
                     <input type="checkbox" name="confirm" value="1">
                     <input type="submit" value="Удалить">
                   </form>

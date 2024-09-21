@@ -175,15 +175,30 @@ def delete():
                         db.session.rollback()
                         print(err)
                         flash('Не удалось выполнить операцию\nПроверьте корректность вводимых данных!')
+                        return redirect(url_for('admin.add_sections'))
+                    
+            elif what_del == 'subsections':
+                sub_section_id = request.form.get('get-id')
+                sub_section = SubSections.query.filter(
+                    SubSections.id == sub_section_id
+                ).first()
+                if sub_section:
+                    try:
+                        db.session.delete(sub_section)
+                        db.session.commit()
+                    except Exception as err:
+                        db.session.rollback()
+                        print(err)
+                        flash('Не удалось выполнить операцию\nПроверьте корректность вводимых данных!')
                         return redirect(url_for('admin.add_sections'))        
             
             flash("Удаление выполнено успешно!")
-            if what_del == 'sections':
+            if what_del == 'sections' or what_del == 'subsections':
                 return redirect(url_for('admin.add_sections'))
             return redirect(url_for('admin.admin'))
         
         flash('Перед удалением отметьте подтверждение!')
-        if what_del == 'sections':
+        if what_del == 'sections' or what_del == 'subsections':
             return redirect(url_for('admin.add_sections'))
         return redirect(url_for('admin.admin'))   
              
