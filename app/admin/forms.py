@@ -55,9 +55,9 @@ class AddProductForm(FlaskForm):
     submit = SubmitField('Применить')
     
 class ShowProductsForm(FlaskForm):
-    select_section = SelectField('Категория товара: ', choices=[])
-    select_sub_section = SelectField('Подкатегория товара: ', choices=[])
-
+    select_section2 = SelectField('Категория товара: ', choices=[])
+    select_sub_section2 = SelectField('Подкатегория товара: ', choices=[])
+    submit1 = SubmitField('Применить')
 
 class AddSectionsForm(FlaskForm):
     name = StringField('Название Категории: ', validators=[

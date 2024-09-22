@@ -57,15 +57,18 @@
 <hr style="border: none; height: 5px; background-color: #000; margin-left: auto; margin-right: auto;">
 <div>
   <h2> Отфильтровать товары </h2>  
-  <form action="" method="post">
+  <form action="admitn/product-filter" method="post">
     {{ form2.hidden_tag() }}
     <p>
-      {{ form2.select_section.label }} 
-      {{ form2.select_section }}
+      {{ form2.select_section2.label }} 
+      {{ form2.select_section2 }}
     </p>
     <p>
-      {{ form2.select_sub_section.label }} 
-      {{ form2.select_sub_section }}
+      {{ form2.select_sub_section2.label }} 
+      {{ form2.select_sub_section2 }}
+    </p>
+    <p>
+      {{ form2.submit1 }}
     </p>
   </form>
   <hr>

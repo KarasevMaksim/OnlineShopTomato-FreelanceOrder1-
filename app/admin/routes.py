@@ -33,8 +33,8 @@ def admin():
     
     form.select_section.choices.extend(sections)
     form.select_sub_section.choices.extend(sub_sections)
-    form2.select_section.choices.extend(sections)
-    form2.select_sub_section.choices.extend(sub_sections)
+    form2.select_section2.choices.extend(sections)
+    form2.select_sub_section2.choices.extend(sub_sections)
     if request.method == 'POST':
         form.select_section.choices.extend([(form.select_section.data,
                                                  form.select_section.data.capitalize())])
@@ -98,6 +98,28 @@ def get_sub_sections():
         (i.name, i.name.capitalize()) for i in sub_sections.sub_sections
     ]
     return jsonify({'sub_sections': sub_sections_choices})
+
+@bp.route('/product-filter', methods=['POST'])
+@login_required
+def product_filter():
+    if not current_user.is_admin:
+        return abort(403)
+    
+    data = request.get_json()
+    section_name = data.get('section2')
+
+    if section_name is None:
+        return jsonify({'error': 'No section provided'}), 400
+
+    sub_sections = Sections.query.filter(Sections.name == section_name).first()
+    if sub_sections is None:
+        return jsonify({'error': 'Section not found'}), 404
+
+    sub_sections_choices = [
+        (i.name, i.name.capitalize()) for i in sub_sections.sub_sections
+    ]
+    return jsonify({'sub_sections': sub_sections_choices})
+    
     
     
 @bp.route('/login', methods=['GET', 'POST'])
