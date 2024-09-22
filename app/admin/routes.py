@@ -1,4 +1,4 @@
-from flask import render_template, request, url_for, redirect, flash, abort
+from flask import render_template, request, url_for, redirect, flash, abort, jsonify
 from app.admin.forms import (
     AddProductForm, AddSectionsForm, AddSubSectionsForm, LoginForm
 )
@@ -19,13 +19,21 @@ def admin():
     if not current_user.is_admin:
         return abort(403)
     
-    sections = [(i.name, i.name.capitalize()) for i in Sections.query.all()]
-    sub_sections = [(i.name, i.name.capitalize()) for i in SubSections.query.all()]
+    sections_item = Sections.query.all()
+    sections = [(i.name, i.name.capitalize()) for i in sections_item]
+    sub_sections = [
+        (i.name, i.name.capitalize()) for i in sections_item[0].sub_sections
+    ]
     form = AddProductForm()
     show_products = Products.query.all()[::-1]
     
     form.select_section.choices.extend(sections)
     form.select_sub_section.choices.extend(sub_sections)
+    if request.method == 'POST':
+        form.select_section.choices.extend([(form.select_section.data,
+                                                 form.select_section.data.capitalize())])
+        form.select_sub_section.choices.extend([(form.select_sub_section.data,
+                                                 form.select_sub_section.data.capitalize())])
     
     if form.validate_on_submit():
         sub_sections_name = form.select_sub_section.data.lower()
@@ -61,8 +69,30 @@ def admin():
         show_products = show_products,
         form=form,
     )
+    
+    
+@bp.route('/get_sub_sections', methods=['POST'])
+@login_required
+def get_sub_sections():
+    if not current_user.is_admin:
+        return abort(403)
+    
+    data = request.get_json()
+    section_name = data.get('section')
 
+    if section_name is None:
+        return jsonify({'error': 'No section provided'}), 400
 
+    sub_sections = Sections.query.filter(Sections.name == section_name).first()
+    if sub_sections is None:
+        return jsonify({'error': 'Section not found'}), 404
+
+    sub_sections_choices = [
+        (i.name, i.name.capitalize()) for i in sub_sections.sub_sections
+    ]
+    return jsonify({'sub_sections': sub_sections_choices})
+    
+    
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
