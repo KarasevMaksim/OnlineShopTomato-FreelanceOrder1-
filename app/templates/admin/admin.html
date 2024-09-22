@@ -54,6 +54,7 @@
     </div>
   {% endfor %}
 </div>
+<hr style="border: none; height: 5px; background-color: #000; margin-left: auto; margin-right: auto;">
 <div>
   {% for product in show_products %}
     <h3>id:{{ product.id }} {{ product.name }}</h3>
@@ -94,6 +95,7 @@
     <p>
       <img src="{{ url_for('static', filename=product.img_link) }}" alt="ImgError"/>
     </p>
+    <hr style="border: none; height: 5px; background-color: #000; margin-left: auto; margin-right: auto;">
   {% endfor %}
 </div>
 
