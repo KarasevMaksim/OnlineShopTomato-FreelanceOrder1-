@@ -53,6 +53,10 @@ class AddProductForm(FlaskForm):
     upload = FileField('Загрузить изображение: ', validators=[DataRequired()])
     
     submit = SubmitField('Применить')
+    
+class ShowProductsForm(FlaskForm):
+    select_section = SelectField('Категория товара: ', choices=[])
+    select_sub_section = SelectField('Подкатегория товара: ', choices=[])
 
 
 class AddSectionsForm(FlaskForm):

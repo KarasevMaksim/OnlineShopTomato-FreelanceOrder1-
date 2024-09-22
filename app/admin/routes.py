@@ -1,6 +1,7 @@
 from flask import render_template, request, url_for, redirect, flash, abort, jsonify
 from app.admin.forms import (
-    AddProductForm, AddSectionsForm, AddSubSectionsForm, LoginForm
+    AddProductForm, AddSectionsForm, AddSubSectionsForm, LoginForm,
+    ShowProductsForm
 )
 from app.admin import bp
 from flask_login import (
@@ -24,11 +25,16 @@ def admin():
     sub_sections = [
         (i.name, i.name.capitalize()) for i in sections_item[0].sub_sections
     ]
+    
     form = AddProductForm()
+    form2 = ShowProductsForm()
+    
     show_products = Products.query.all()[::-1]
     
     form.select_section.choices.extend(sections)
     form.select_sub_section.choices.extend(sub_sections)
+    form2.select_section.choices.extend(sections)
+    form2.select_sub_section.choices.extend(sub_sections)
     if request.method == 'POST':
         form.select_section.choices.extend([(form.select_section.data,
                                                  form.select_section.data.capitalize())])
@@ -68,6 +74,7 @@ def admin():
         'admin/admin.html',
         show_products = show_products,
         form=form,
+        form2=form2
     )
     
     
