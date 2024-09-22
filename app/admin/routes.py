@@ -36,10 +36,18 @@ def admin():
     form2.select_section2.choices.extend(sections)
     form2.select_sub_section2.choices.extend(sub_sections)
     if request.method == 'POST':
-        form.select_section.choices.extend([(form.select_section.data,
+        if form.select_section.data:
+            form.select_section.choices.extend([(form.select_section.data,
                                                  form.select_section.data.capitalize())])
-        form.select_sub_section.choices.extend([(form.select_sub_section.data,
+            form.select_sub_section.choices.extend([(form.select_sub_section.data,
                                                  form.select_sub_section.data.capitalize())])
+        
+
+    if request.method == 'POST' and form2.select_section2.data:
+        sec_for_products = SubSections.query.filter(
+            SubSections.name == form2.select_sub_section2.data
+        ).first()
+        show_products = sec_for_products.products[::-1]
     
     if form.validate_on_submit():
         sub_sections_name = form.select_sub_section.data.lower()
@@ -98,6 +106,7 @@ def get_sub_sections():
         (i.name, i.name.capitalize()) for i in sub_sections.sub_sections
     ]
     return jsonify({'sub_sections': sub_sections_choices})
+
 
 @bp.route('/product-filter', methods=['POST'])
 @login_required
