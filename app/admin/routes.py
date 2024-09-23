@@ -1,4 +1,8 @@
-from flask import render_template, request, url_for, redirect, flash, abort, jsonify
+import json
+from flask import (
+    render_template, request, url_for, redirect, flash, abort, jsonify,
+    make_response
+)
 from app.admin.forms import (
     AddProductForm, AddSectionsForm, AddSubSectionsForm, LoginForm,
     ShowProductsForm
@@ -37,12 +41,15 @@ def admin():
     form2.select_sub_section2.choices.extend(sub_sections)
     if request.method == 'POST':
         if form.select_section.data:
-            form.select_section.choices.extend([(form.select_section.data,
-                                                 form.select_section.data.capitalize())])
-            form.select_sub_section.choices.extend([(form.select_sub_section.data,
-                                                 form.select_sub_section.data.capitalize())])
+            form.select_section.choices.extend(
+                [(form.select_section.data,
+                  form.select_section.data.capitalize())]
+            )
+            form.select_sub_section.choices.extend(
+                [(form.select_sub_section.data,
+                  form.select_sub_section.data.capitalize())]
+            )
         
-
     if request.method == 'POST' and form2.select_section2.data:
         sec_for_products = SubSections.query.filter(
             SubSections.name == form2.select_sub_section2.data
@@ -230,7 +237,10 @@ def delete():
                 ).first()
                 if product:
                     try:
-                        product_img = url_for('static', filename=product.img_link)
+                        product_img = url_for(
+                            'static',
+                            filename=product.img_link
+                        )
                         db.session.delete(product)
                         db.session.commit()
                         delete_product_img(product_img)
@@ -270,7 +280,9 @@ def delete():
                         section_name = sub_section.name
                         db.session.delete(sub_section)
                         db.session.commit()
-                        delete_paths_to_img([f'/static/img/products/{section_name}'])
+                        delete_paths_to_img(
+                            [f'/static/img/products/{section_name}']
+                        )
                     except Exception as err:
                         db.session.rollback()
                         print(err)
@@ -287,6 +299,71 @@ def delete():
             return redirect(url_for('admin.add_sections'))
         return redirect(url_for('admin.admin'))   
              
+    return abort(403)
+
+
+@bp.route('/custom-update-sections', methods=['POST', 'GET'])
+@login_required
+def custom_update_sections():
+    if current_user.is_admin:
+        confirm = request.form.get('confirm')
+        what_update = request.form.get('type')
+        if request.method == 'POST' and what_update and confirm:
+            user_data = {
+                'what_update': what_update,
+                'id': request.form.get('get-id'),
+            }
+            user_data_json = json.dumps(user_data)
+            response = make_response(
+                render_template('admin/update_sections.html')
+            )
+            response.set_cookie(
+                'user_data',
+                user_data_json,
+                max_age=60*60*24,
+                httponly=True
+            )
+            return response
+        
+        elif request.method == 'POST' and confirm:
+            user_data_json = request.cookies.get('user_data')
+            if user_data_json:
+                user_data = json.loads(user_data_json)
+                if user_data['what_update'] == 'sections':
+                    db_section = Sections.query.filter(
+                        Sections.id == user_data['id']
+                    ).first()
+                    try:
+                        db_section.name = request.form.get('name').lower()
+                        db.session.add(db_section)
+                        db.session.commit()
+                    except Exception as err:
+                        db.session.rollback()
+                        print(err)
+                    
+                elif user_data['what_update'] == 'subsections':
+                    db_sub_section = SubSections.query.filter(
+                        SubSections.id == user_data['id']
+                    ).first()
+                    try:
+                        db_sub_section.name = request.form.get('name').lower()
+                        db.session.add(db_sub_section)
+                        db.session.commit()
+                    except Exception as err:
+                        db.session.rollback()
+                        print(err)
+                    
+                response = make_response(
+                    redirect(url_for('admin.add_sections'))
+                )
+                response.delete_cookie('user_data')
+                return response
+            
+            return abort(500)
+        
+        flash('Перед редактированием отметьте кнопку подтверждения!')
+        return redirect(url_for('admin.add_sections'))
+            
     return abort(403)
 
 

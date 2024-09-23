@@ -1,0 +1,14 @@
+{% extends 'admin/base.html' %}
+
+
+{% block content %}
+  <div>
+    <form action="" method="post">
+      <h2>Установить новое имя</h2>
+      <input  name="name" value=""> <br><br>
+      <input type="hidden" name="update" value="1">
+      <input type="checkbox" name="confirm" value="1">
+      <input type="submit" value="Принять">
+    </form>
+  </div>
+{% endblock %}
