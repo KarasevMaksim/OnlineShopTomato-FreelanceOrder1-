@@ -11,6 +11,7 @@ from wtforms.validators import (
 from app import db
 from app.models import Users, Sections, SubSections, Products
 from config import Config
+from flask_wtf.file import FileAllowed, FileRequired
 
 
 class LoginForm(FlaskForm):
@@ -50,7 +51,19 @@ class AddProductForm(FlaskForm):
     
     select_sub_section = SelectField('Подкатегория товара: ', choices=[])
     
-    upload = FileField('Загрузить изображение: ', validators=[DataRequired()])
+
+    upload = FileField('Загрузить изображение: ', validators=
+                       [
+                           FileRequired(),
+                           FileAllowed(
+                            [
+                                'jpg', 'png',
+                                'jpeg', 'gif',
+                                'webm', 'webp'
+                            ],
+                            'Только .jpg .png .gif .webp .webm!'
+                            )
+                        ])
     
     submit = SubmitField('Применить')
     

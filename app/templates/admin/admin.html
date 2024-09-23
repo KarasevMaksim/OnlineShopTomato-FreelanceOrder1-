@@ -40,6 +40,11 @@
     <p>
       {{ form.upload.label }} <br>
       {{ form.upload }}
+      {% for error in form.upload.errors %}
+        <div class="alert alert-danger" style="color: red;" role="alert">
+          {{ error }}
+        </div>
+      {% endfor %}
     </p>
     <p>
       {{ form.submit }}
