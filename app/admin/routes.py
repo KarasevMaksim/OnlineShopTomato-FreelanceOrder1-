@@ -77,7 +77,7 @@ def admin():
             file_img = form.upload.data
             path_to_save, path_to_db = save_product_img(
                 file_img.filename,
-                sub_sections_name
+                str(db_sub_sections.id)
             )
             file_img = resized_image(file_img)
             file_img.save(path_to_save)

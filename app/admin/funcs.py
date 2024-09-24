@@ -8,7 +8,7 @@ from PIL import Image
 from urllib.parse import unquote
 
 
-def save_product_img(picture_name, sections_name):
+def save_product_img(picture_name, sections_id):
     _, _ext = os.path.splitext(secure_filename(picture_name))
     new_picture_name = f"{secrets.token_hex(10)}{_ext}"
     
@@ -17,13 +17,13 @@ def save_product_img(picture_name, sections_name):
         'static',
         'img',
         'products',
-        sections_name
+        sections_id
     )
     
     if not os.path.exists(full_path):
         os.makedirs(full_path)
         
-    path_to_db = os.path.join('img', 'products', sections_name, new_picture_name).replace('\\', '/')
+    path_to_db = os.path.join('img', 'products', sections_id, new_picture_name).replace('\\', '/')
     path_to_save = os.path.join(full_path, new_picture_name)
     return path_to_save, path_to_db
 
