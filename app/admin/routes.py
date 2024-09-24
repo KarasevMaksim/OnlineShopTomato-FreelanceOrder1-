@@ -26,35 +26,41 @@ def admin():
     
     sections_item = Sections.query.all()
     sections = [(i.name, i.name.capitalize()) for i in sections_item]
-    sub_sections = [
-        (i.name, i.name.capitalize()) for i in sections_item[0].sub_sections
-    ]
+    if sections_item:
+        sub_sections = [
+            (i.name, i.name.capitalize()) for i in sections_item[0].sub_sections
+        ]
     
     form = AddProductForm()
     form2 = ShowProductsForm()
     
     show_products = Products.query.all()[::-1]
-    
-    form.select_section.choices.extend(sections)
-    form.select_sub_section.choices.extend(sub_sections)
-    form2.select_section2.choices.extend(sections)
-    form2.select_sub_section2.choices.extend(sub_sections)
+    if sections_item:
+        form.select_section.choices.extend(sections)
+        form.select_sub_section.choices.extend(sub_sections)
+        form2.select_section2.choices.extend(sections)
+        form2.select_sub_section2.choices.extend(sub_sections)
     if request.method == 'POST':
-        if form.select_section.data:
-            form.select_section.choices.extend(
-                [(form.select_section.data,
-                  form.select_section.data.capitalize())]
-            )
-            form.select_sub_section.choices.extend(
-                [(form.select_sub_section.data,
+        try:
+            if form.select_section.data:
+                form.select_section.choices.extend(
+                    [(form.select_section.data,
+                    form.select_section.data.capitalize())]
+                )
+                form.select_sub_section.choices.extend(
+                    [(form.select_sub_section.data,
                   form.select_sub_section.data.capitalize())]
-            )
+                )
+        except Exception as err:
+            print(err)
+            return redirect(url_for('admin.admin'))
         
     if request.method == 'POST' and form2.select_section2.data:
         sec_for_products = SubSections.query.filter(
             SubSections.name == form2.select_sub_section2.data
         ).first()
-        show_products = sec_for_products.products[::-1]
+        if sec_for_products:
+            show_products = sec_for_products.products[::-1]
     
     elif form.validate_on_submit():
         sub_sections_name = form.select_sub_section.data.lower()
