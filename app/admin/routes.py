@@ -264,7 +264,7 @@ def delete():
                 if section:
                     try:
                         img_paths = map(
-                            lambda item: f'/static/img/products/{item.name}',
+                            lambda item: f'/static/img/products/{item.id}',
                             section.sub_sections
                         )
                         db.session.delete(section)
@@ -283,11 +283,10 @@ def delete():
                 ).first()
                 if sub_section:
                     try:
-                        section_name = sub_section.name
                         db.session.delete(sub_section)
                         db.session.commit()
                         delete_paths_to_img(
-                            [f'/static/img/products/{section_name}']
+                            [f'/static/img/products/{sub_section.id}']
                         )
                     except Exception as err:
                         db.session.rollback()
