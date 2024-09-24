@@ -56,7 +56,7 @@ def admin():
         ).first()
         show_products = sec_for_products.products[::-1]
     
-    if form.validate_on_submit():
+    elif form.validate_on_submit():
         sub_sections_name = form.select_sub_section.data.lower()
         try:
             db_sub_sections = SubSections().query.filter(
@@ -302,7 +302,7 @@ def delete():
     return abort(403)
 
 
-@bp.route('/custom-update-sections', methods=['POST', 'GET'])
+@bp.route('/custom-update-sections', methods=['POST'])
 @login_required
 def custom_update_sections():
     if current_user.is_admin:
