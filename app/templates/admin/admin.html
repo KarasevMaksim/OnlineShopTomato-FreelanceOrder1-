@@ -32,6 +32,11 @@
     <p>
       {{ form.price.label }}
       {{ form.price }}
+      {% for error in form.price.errors %}
+        <div class="alert alert-danger" style="color: red;" role="alert">
+          {{ error }}
+        </div>
+      {% endfor %}
     </p>
     <p>
       {{ form.about.label }} <br>

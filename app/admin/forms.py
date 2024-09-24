@@ -44,7 +44,8 @@ class AddProductForm(FlaskForm):
     
     price = StringField('Цена товара: ', validators=
                         [DataRequired(message='Поле не может быть пустым'),
-                         Length(min=1, max=20)
+                         Length(min=1, max=8, message='от 1 до 8 символов!'),
+                         Regexp(r'^\d+$', message='Тлько цифры!')
                          ])
     
     select_section = SelectField('Категория товара: ', choices=[])
