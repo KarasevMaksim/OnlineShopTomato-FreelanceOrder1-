@@ -2,5 +2,19 @@
 
 
 {% block content %}
-  <h1> Hello World </h1>
+  {% for product in products %}
+    {% if product.is_active %}
+      <div>
+        <h2>{{ product.name }}<h2>
+        <p>Цена: {{ product.price }} р.</p>
+        {% if product.about %}
+          <p>Описание: {{ product.about }}</p>
+        {% endif %}
+        <div>
+          <img src="{{ url_for('static', filename=product.img_link) }}" alt="product_img">
+        </div>
+      </div>
+    {% endif %}
+  {% endfor %}
+
 {% endblock %}
