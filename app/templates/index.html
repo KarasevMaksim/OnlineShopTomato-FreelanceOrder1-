@@ -2,6 +2,23 @@
 
 
 {% block content %}
+  <div>
+    <h2>Выбрать товар из категории</h2>
+    <form action="filter-product" method="post">
+      {{ form.hidden_tag() }}
+    <p>
+      {{ form.select_section2.label }}
+      {{ form.select_section2 }}
+    </p>
+    <p>
+      {{ form.select_sub_section2.label }}
+      {{ form.select_section2 }}
+    </p>
+    <p>
+      {{ form.submit1 }}
+      {{ form.submit2 }}
+    </p>
+  </div>
   {% for product in products %}
     {% if product.is_active %}
       <div>
@@ -17,4 +34,9 @@
     {% endif %}
   {% endfor %}
 
+{% endblock %}
+
+
+{% block scripts %}
+  {% include '_scripts.html' %}
 {% endblock %}
