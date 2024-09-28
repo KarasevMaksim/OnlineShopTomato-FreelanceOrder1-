@@ -17,3 +17,10 @@ def internal_error(error):
         'errors/error_page.html',
         type_error=500), 500
     
+    
+@bp.app_errorhandler(403)
+def internal_error(error):
+    db.session.rollback()
+    return render_template(
+        'errors/error_page.html',
+        type_error=403), 403

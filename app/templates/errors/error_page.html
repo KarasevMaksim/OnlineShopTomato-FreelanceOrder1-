@@ -1,5 +1,16 @@
 {% if type_error == 404 %}
-  <h1> Ошибка {{ type_error }} Страница не найдена! </h1>
+  <div class="error-handler">
+    <h1> Ошибка {{ type_error }} Страница не найдена! </h1>
+    <img src="{{ url_for('static', filename='img/work_img/404.png') }}" alt="err_img">
+  </div>
 {% elif type_error == 500 %}
-  <h1> Ошибка {{ type_error }} Ошибка сервера! </h1>
+  <div class="error-handler">
+    <h1> Ошибка {{ type_error }} Ошибка сервера! </h1>
+    <img src="{{ url_for('static', filename='img/work_img/500.png') }}" alt="err_img">
+  </div>
+{% elif type_error == 403 %} 
+  <div class="error-handler">
+    <h1> Ошибка {{ type_error }} Доступ запрещен! </h1>
+    <img src="{{ url_for('static', filename='img/work_img/403.png') }}" alt="err_img">
+  </div>
 {% endif %}
