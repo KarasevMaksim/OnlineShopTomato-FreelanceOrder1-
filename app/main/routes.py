@@ -16,20 +16,46 @@ def index():
     form = ShowProductsForm()
     sections_item = Sections.query.all()
     sections = [(i.name, i.name.capitalize()) for i in sections_item]
+
     if sections_item:
         sub_sections = [
             (i.name, i.name.capitalize()) for i in sections_item[0].sub_sections
         ]
         form.select_section2.choices.extend(sections)
         form.select_sub_section2.choices.extend(sub_sections)
+        
     if request.cookies.get('user_data'):
         user_data = json.loads(request.cookies.get('user_data'))
+        section_name = user_data['sections']
+        sub_section_name = user_data['sub_sections']
         sub_sect = SubSections.query.filter(
-            SubSections.name == user_data['sub_sections']
+            SubSections.name == sub_section_name 
         ).first()
         products = sub_sect.products
+
+        if sections_item:
+            del_item = (section_name, section_name.capitalize())
+            index_del_item = form.select_section2.choices.index(del_item)
+            item = form.select_section2.choices.pop(index_del_item)
+            form.select_section2.choices.insert(0, item)
+
+            for_sub_item = Sections.query.filter(
+                Sections.name == section_name 
+            ).first()
+            sub_sections = [
+            (i.name, i.name.capitalize()) for i in for_sub_item.sub_sections
+            ]
+            form.select_sub_section2.choices.clear()
+            form.select_sub_section2.choices.extend(sub_sections)
+            del_sub_item = (sub_section_name, sub_section_name.capitalize())
+            index_del_sub_item = form.select_sub_section2.choices.index(
+                del_sub_item
+            )
+            sub_item = form.select_sub_section2.choices.pop(index_del_sub_item)
+            form.select_sub_section2.choices.insert(0, sub_item)
     else:
         products = Products.query.all()[::-1]
+        
     return render_template(
         'index.html',
         title=title,
