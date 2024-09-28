@@ -1,6 +1,6 @@
 from flask import render_template
 import sqlalchemy as sa
-from app.models import Users, Products
+from app.models import Products, Sections, SubSections
 from app.main import bp
 from app.main.forms import (
     ShowProductsForm
@@ -11,7 +11,7 @@ from app.main.forms import (
 def index():
     form = ShowProductsForm()
     title = 'Tomato'
-    products = Products.query.all()
+    products = Products.query.all()[::-1]
     return render_template(
         'index.html',
         title=title,
