@@ -23,10 +23,13 @@ def index():
         form.select_section2.choices.extend(sections)
         form.select_sub_section2.choices.extend(sub_sections)
     if request.cookies.get('user_data'):
-        print('\n YES')
+        user_data = json.loads(request.cookies.get('user_data'))
+        sub_sect = SubSections.query.filter(
+            SubSections.name == user_data['sub_sections']
+        ).first()
+        products = sub_sect.products
     else:
-        print('\n NO')
-    products = Products.query.all()[::-1]
+        products = Products.query.all()[::-1]
     return render_template(
         'index.html',
         title=title,
@@ -63,7 +66,7 @@ def update_product():
         response.delete_cookie('user_data')
         return response
 
-    return abort(500)
+    return redirect(url_for('main.index'))
 
 
 @bp.route('/product-filter', methods=['POST'])
