@@ -8,10 +8,12 @@
 {% block content %}
 
 <div>
-    <a href="{{ url_for('admin.logout') }}">Выйти из админ панели</a>
+  <a href="{{ url_for('main.index') }}">На главную страницу</a>
+<div>
+  <a href="{{ url_for('admin.logout') }}">Выйти из админ панели</a>
 </div>
 <div>
-    <a href="{{ url_for('admin.add_sections') }}">Редактировать категории</a>
+  <a href="{{ url_for('admin.add_sections') }}">Редактировать категории</a>
 </div>
 <div>
   <h2> Добавить новый товар </h2>  
