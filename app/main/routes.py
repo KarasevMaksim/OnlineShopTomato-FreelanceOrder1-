@@ -33,7 +33,7 @@ def index():
         ).first()
         offset = 0
         products = sub_sect.products[::-1]
-        products = products[offset:offset+3]
+        products = products[offset:offset+9]
 
         if sections_item:
             del_item = (section_name, section_name.capitalize())
@@ -56,7 +56,9 @@ def index():
             sub_item = form.select_sub_section2.choices.pop(index_del_sub_item)
             form.select_sub_section2.choices.insert(0, sub_item)
     else:
+        offset = 0
         products = Products.query.all()[::-1]
+        products = products[offset:offset+9]
     
         
     return render_template(
@@ -119,12 +121,16 @@ def product_filter():
 @bp.route('/load-more', methods=['POST'])
 def load_more():
     json_cook = request.cookies.get('user_data')
-    offset = int(request.form.get('offset', 3))
-    limit = 3  # Количество элементов для загрузки за раз
+    offset = int(request.form.get('offset', 9))
+    limit = 9  # Количество элементов для загрузки за раз
     if json_cook:
         cook = json.loads(json_cook)
         subsection = cook['sub_sections']
-    sec = SubSections.query.filter(SubSections.name == subsection).first()
-    products = sec.products[::-1]
-    products = products[offset:offset+limit]
+        sec = SubSections.query.filter(SubSections.name == subsection).first()
+        products = sec.products[::-1]
+        products = products[offset:offset+limit]
+    else:
+        products = Products.query.all()[::-1]
+        products = products[offset:offset+9]
+    
     return render_template("item_list.html", products=products, offset=offset)

@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    var offset = 3;
+    var offset = 9;
     $('#load-more-btn').on('click', function() {
       $.ajax({
         type: 'POST',
@@ -7,7 +7,7 @@ $(document).ready(function() {
         data: { offset: offset },
         success: function(html) {
           $('#item-list').append(html);
-          offset += 3;
+          offset += 9;
         }
       });
     });
