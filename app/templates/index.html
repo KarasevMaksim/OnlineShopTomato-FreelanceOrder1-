@@ -6,33 +6,28 @@
     <h2>Выбрать товар из категории</h2>
     <form action="/update-puduct" method="post">
       {{ form.hidden_tag() }}
-    <p>
-      {{ form.select_section2.label }}
-      {{ form.select_section2 }}
-    </p>
-    <p>
-      {{ form.select_sub_section2.label }}
-      {{ form.select_sub_section2 }}
-    </p>
-    <p>
-      {{ form.submit1 }}
-      {{ form.submit2 }}
-    </p>
+      <p>
+        {{ form.select_section2.label }}
+        {{ form.select_section2 }}
+      </p>
+      <p>
+        {{ form.select_sub_section2.label }}
+        {{ form.select_sub_section2 }}
+      </p>
+      <p>
+        {{ form.submit1 }}
+        {{ form.submit2 }}
+      </p>
+    </form>
   </div>
-  {% for product in products %}
-    {% if product.is_active %}
-      <div>
-        <h2>{{ product.name }}<h2>
-        <p>Цена: {{ product.price }} р.</p>
-        {% if product.about %}
-          <p>Описание: {{ product.about }}</p>
-        {% endif %}
-        <div>
-          <img src="{{ url_for('static', filename=product.img_link) }}" alt="product_img">
-        </div>
-      </div>
-    {% endif %}
-  {% endfor %}
+  <div id="item-list">
+    {% for item in items %}
+        <!-- Отображение элемента здесь -->
+        <p>{{ item.price }}</p>
+    {% endfor %}
+  </div>
+
+  <button id="load-more-btn">Показать еще</button>
 
 {% endblock %}
 

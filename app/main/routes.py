@@ -31,7 +31,9 @@ def index():
         sub_sect = SubSections.query.filter(
             SubSections.name == sub_section_name 
         ).first()
-        products = sub_sect.products
+        offset = 0
+        items = sub_sect.products[::-1]
+        items = items[offset:offset+3]
 
         if sections_item:
             del_item = (section_name, section_name.capitalize())
@@ -54,13 +56,14 @@ def index():
             sub_item = form.select_sub_section2.choices.pop(index_del_sub_item)
             form.select_sub_section2.choices.insert(0, sub_item)
     else:
-        products = Products.query.all()[::-1]
+        items = Products.query.all()[::-1]
+    
         
     return render_template(
         'index.html',
         title=title,
-        products=products,
-        form=form
+        form=form,
+        items=items
     )
 
 
@@ -113,6 +116,25 @@ def product_filter():
     return jsonify({'sub_sections': sub_sections_choices})
     
 
-@bp.route('/update-pag', methods=['POST'])
-def update_pag():
-    pass
+@bp.route('/load-more', methods=['POST'])
+def load_more():
+    json_cook = request.cookies.get('user_data')
+    offset = int(request.form.get('offset', 3))
+    limit = 3  # Количество элементов для загрузки за раз
+    if json_cook:
+        cook = json.loads(json_cook)
+        subsection = cook['sub_sections']
+    sec = SubSections.query.filter(SubSections.name == subsection).first()
+    items = sec.products[::-1]
+    items = items[offset:offset+limit]
+    print(items)
+    item_data = [
+        {
+            'name': item.name,
+            'is_acitve': item.is_active,
+            'price': item.price,
+            'about': item.about,
+            'img_link': item.img_link
+        } for item in items
+    ]  
+    return jsonify(item_data)
