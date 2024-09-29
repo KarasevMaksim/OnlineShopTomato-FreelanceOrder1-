@@ -32,8 +32,8 @@ def index():
             SubSections.name == sub_section_name 
         ).first()
         offset = 0
-        items = sub_sect.products[::-1]
-        items = items[offset:offset+3]
+        products = sub_sect.products[::-1]
+        products = products[offset:offset+3]
 
         if sections_item:
             del_item = (section_name, section_name.capitalize())
@@ -56,14 +56,14 @@ def index():
             sub_item = form.select_sub_section2.choices.pop(index_del_sub_item)
             form.select_sub_section2.choices.insert(0, sub_item)
     else:
-        items = Products.query.all()[::-1]
+        products = Products.query.all()[::-1]
     
         
     return render_template(
         'index.html',
         title=title,
         form=form,
-        items=items
+        products=products
     )
 
 
@@ -125,16 +125,6 @@ def load_more():
         cook = json.loads(json_cook)
         subsection = cook['sub_sections']
     sec = SubSections.query.filter(SubSections.name == subsection).first()
-    items = sec.products[::-1]
-    items = items[offset:offset+limit]
-    print(items)
-    item_data = [
-        {
-            'name': item.name,
-            'is_acitve': item.is_active,
-            'price': item.price,
-            'about': item.about,
-            'img_link': item.img_link
-        } for item in items
-    ]  
-    return jsonify(item_data)
+    products = sec.products[::-1]
+    products = products[offset:offset+limit]
+    return render_template("item_list.html", products=products, offset=offset)
