@@ -2,7 +2,7 @@ $(document).ready(function() {
     $('#update-button').click(function() {
         $.ajax({
             type: 'POST',
-            url: '/update',
+            url: 'update-pag',
             success: function(response) {
                 // Добавляем содержимое в конец элемента с id 'item-list'
                 $('#item-list').append(response);

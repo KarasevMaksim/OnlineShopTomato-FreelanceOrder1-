@@ -112,3 +112,7 @@ def product_filter():
     ]
     return jsonify({'sub_sections': sub_sections_choices})
     
+
+@bp.route('/update-pag', methods=['POST'])
+def update_pag():
+    pass
