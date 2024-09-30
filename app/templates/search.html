@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+<h1>Поиск товара</h1>
+<div>
+  <form action="/search" method="post">
+    {{ form.hidden_tag() }}
+    <p>
+      {{ form.input_search.label }}
+      {{ form.input_search }}
+      {{ form.submit }}
+      {% for error in form.input_search.errors %}
+        <div class="alert alert-danger" role="alert">
+          {{ error }}
+        </div>
+        {% endfor %}
+      {% for message in get_flashed_messages() %}
+        <div style="color: red;">{{ message }}</div>
+      {% endfor %}
+    </p>
+  </form>
+</div>
+<div id="item-list">
+  {% for product in products %}
+    {% if product.is_active %}
+      <div>
+        <h2>{{ product.name }}</h2>
+        <p>Цена: {{ product.price }} р.</p>
+        {% if product.about %}
+          <p>Описание: {{ product.about }}</p>
+        {% endif %}
+        <div>
+          <img src="{{ url_for('static', filename=product.img_link) }}" alt="product_img">
+        </div>
+      </div>
+    {% endif %}
+  {% endfor %}
+</div>
+{% endblock %}

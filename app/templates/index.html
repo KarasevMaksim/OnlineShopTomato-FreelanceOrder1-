@@ -3,6 +3,21 @@
 
 {% block content %}
   <div>
+    <form action="/search" method="post">
+      {{ form2.hidden_tag() }}
+      <p>
+        {{ form2.input_search.label }}
+        {{ form2.input_search }}
+        {{ form2.submit }}
+        {% for error in form2.input_search.errors %}
+          <div class="alert alert-danger" role="alert">
+            {{ error }}
+          </div>
+        {% endfor %}
+      </p>
+    </form>
+  </div>
+  <div>
     <h2>Выбрать товар из категории</h2>
     <form action="/update-puduct" method="post">
       {{ form.hidden_tag() }}
