@@ -20,3 +20,22 @@ class ShowProductsForm(FlaskForm):
     select_sub_section2 = SelectField('Подкатегория товара: ', choices=[])
     submit1 = SubmitField('Применить')
     submit2 = SubmitField('Показать все')
+
+    
+class SearchForm(FlaskForm):
+    input_search = StringField('Найти товар: ', validators=
+                               [DataRequired(
+                                   message='Поле не может быть пустым'),
+                                Length(
+                                    min=4,
+                                    max=20,
+                                    message='Ввод разрешен: от 4, до 20 символов'
+                                ),
+                                Regexp(
+                                    r'^[а-яА-Яa-zA-Z0-9\s]+$',
+                                    message='Введен неподдерживаемый символ'
+                                )
+                               ]
+    )
+    submit = SubmitField('Поиск')
+    

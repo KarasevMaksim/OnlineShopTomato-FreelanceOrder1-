@@ -6,7 +6,7 @@ import sqlalchemy as sa
 from app.models import Products, Sections, SubSections
 from app.main import bp
 from app.main.forms import (
-    ShowProductsForm
+    ShowProductsForm, SearchForm
 )
 
 
@@ -14,6 +14,7 @@ from app.main.forms import (
 def index():
     title = 'Tomato'
     form = ShowProductsForm()
+    form2 = SearchForm()
     sections_item = Sections.query.all()
     sections = [(i.name, i.name.capitalize()) for i in sections_item]
 
@@ -65,6 +66,7 @@ def index():
         'index.html',
         title=title,
         form=form,
+        form2=form2,
         products=products
     )
 
@@ -134,3 +136,13 @@ def load_more():
         products = products[offset:offset+9]
     
     return render_template("item_list.html", products=products, offset=offset)
+
+
+@bp.route('/search', methods=['POST'])
+def search():
+    form = SearchForm()
+    if form.validate_on_submit():
+        print('\n 666 \n')
+    return render_template('search.html',
+                           form=form
+    )

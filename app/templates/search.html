@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+<h1>Поиск товара</h1>
+<div>
+  <form action="/search" method="post">
+    {{ form.hidden_tag() }}
+    <p>
+      {{ form.input_search.label }}
+      {{ form.input_search }}
+      {{ form.submit }}
+      {% for error in form.input_search.errors %}
+        <div class="alert alert-danger" role="alert">
+          {{ error }}
+        </div>
+        {% endfor %}
+    </p>
+  </form>
+</div>
+{% endblock %}
