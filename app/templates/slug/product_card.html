@@ -14,4 +14,10 @@
       </div>
     </div>
   </div>
+  <div>
+    <form action="{{ url_for('slug.add_to_basket') }}" method="post">
+      <input type="hidden" name="get_id" value="{{ product.id }}">
+      <input type="submit" value="Добавить в корзину">
+    </form>
+  </div>
 {% endblock %}

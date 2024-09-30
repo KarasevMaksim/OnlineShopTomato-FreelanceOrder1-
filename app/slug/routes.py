@@ -1,3 +1,5 @@
+import json
+
 from flask import (
     render_template, url_for, request, jsonify, make_response, redirect, abort,
     flash
@@ -16,4 +18,10 @@ def index(id):
             product=product
         )
     abort(404)
-    
+
+
+@bp.route('/add-to-basket', methods=['POST'])
+def add_to_basket():
+    product_id = request.form.get('get_id')
+    flash("Товар успешно добавлен в корзину!")
+    return redirect(url_for('slug.index', id=product_id))
