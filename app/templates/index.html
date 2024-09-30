@@ -24,7 +24,7 @@
     {% for product in products %}
       {% if product.is_active %}
         <div>
-          <h2>{{ product.name }}<h2>
+          <h2>{{ product.name }}</h2>
           <p>Цена: {{ product.price }} р.</p>
           {% if product.about %}
             <p>Описание: {{ product.about }}</p>
