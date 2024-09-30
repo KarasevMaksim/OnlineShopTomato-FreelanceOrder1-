@@ -27,9 +27,9 @@ class SearchForm(FlaskForm):
                                [DataRequired(
                                    message='Поле не может быть пустым'),
                                 Length(
-                                    min=4,
+                                    min=3,
                                     max=20,
-                                    message='Ввод разрешен: от 4, до 20 символов'
+                                    message='Ввод разрешен: от 3, до 20 символов'
                                 ),
                                 Regexp(
                                     r'^[а-яА-Яa-zA-Z0-9\s]+$',

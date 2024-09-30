@@ -1,6 +1,7 @@
 import json
 from flask import (
-    render_template, url_for, request, jsonify, make_response, redirect, abort
+    render_template, url_for, request, jsonify, make_response, redirect, abort,
+    flash
 )
 import sqlalchemy as sa
 from app.models import Products, Sections, SubSections
@@ -138,11 +139,17 @@ def load_more():
     return render_template("item_list.html", products=products, offset=offset)
 
 
-@bp.route('/search', methods=['POST'])
+@bp.route('/search', methods=['POST', 'GET'])
 def search():
     form = SearchForm()
     if form.validate_on_submit():
-        print('\n 666 \n')
+        search_name = form.input_search.data
+        products = Products.query.filter(
+            Products.name.contains(search_name)
+        ).all()
+        if not products:
+            flash('Не чего не найдено!')
     return render_template('search.html',
-                           form=form
+                           form=form,
+                           products=products
     )
