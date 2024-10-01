@@ -11,11 +11,15 @@ from app.slug import bp
 
 @bp.route('/<int:id>')
 def index(id):
+    data_basket = request.cookies.get('data_basket')
+    data_basket = json.loads(data_basket)
     product = Products.query.get(id)
     if product and product.is_active:
         return render_template(
             'slug/product_card.html',
-            product=product
+            product=product,
+            data_basket=data_basket,
+            p_id=str(id)
         )
     abort(404)
 
