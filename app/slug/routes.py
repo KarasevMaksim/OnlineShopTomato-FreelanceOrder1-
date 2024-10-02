@@ -4,7 +4,6 @@ from flask import (
     render_template, url_for, request, jsonify, make_response, redirect, abort,
     flash
 )
-import sqlalchemy as sa
 from app.models import Products, Sections, SubSections
 from app.slug import bp
 
@@ -12,7 +11,8 @@ from app.slug import bp
 @bp.route('/<int:id>')
 def index(id):
     data_basket = request.cookies.get('data_basket')
-    data_basket = json.loads(data_basket)
+    if data_basket:
+        data_basket = json.loads(data_basket)
     product = Products.query.get(id)
     if product and product.is_active:
         return render_template(
@@ -44,6 +44,7 @@ def add_to_basket():
                 data_basket_json,
                 max_age=60*60*24
             )
+            flash('Товар успешно добавлен в корзину!')
             return response
                 
         data_basket = {product_id: cost}

@@ -2,6 +2,11 @@
 
 
 {% block content %}
+  {% for message in get_flashed_messages() %}
+    <div class="alert alert-danger" style="color: red;" role="alert">
+      {{ message }}
+    </div>
+  {% endfor %}
   <div id="item-list">
     <div>
       <h2>{{ product.name }}</h2>
