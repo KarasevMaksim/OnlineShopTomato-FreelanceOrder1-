@@ -32,6 +32,9 @@ def create_app(config_class=Config):
     from app.slug import bp as slug_bp
     app.register_blueprint(slug_bp)
     
+    from app.news import bp as news_bp
+    app.register_blueprint(news_bp)
+    
     return app
 
 
