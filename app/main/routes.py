@@ -153,3 +153,14 @@ def search():
                            form=form,
                            products=products
     )
+
+    
+@bp.route('/contacts')
+def contacts():
+    return render_template('contacts.html')
+
+    
+@bp.route('/more-info')
+def more_info():
+    return render_template('more_info.html')
+    
