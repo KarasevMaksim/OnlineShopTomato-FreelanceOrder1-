@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+  {% for message in get_flashed_messages() %}
+    <div class="alert alert-danger" style="color: red;" role="alert">
+      {{ message }}
+    </div>
+  {% endfor %}
+  <div id="item-list">
+    <div>
+      <h2>{{ product.name }}</h2>
+      <p>Цена: {{ product.price }} р.</p>
+      <p type="hidden" id="priceElement" style="display: none;">{{ product.price }}</p>
+      {% if product.about %}
+        <p>Описание: {{ product.about }}</p>
+      {% endif %}
+      <div>
+        <img src="{{ url_for('static', filename=product.img_link) }}" alt="product_img">
+      </div>
+    </div>
+  </div>
+  <div>
+    <form action="{{ url_for('slug.add_to_basket') }}" method="post">
+      {% if data_basket and p_id in data_basket %}
+        <input type="number" step="1" min="1" max="100" value="{{data_basket[p_id]}}" id="quantity" name="cost"/>
+      {% else %}
+        <input type="number" step="1" min="1" max="100" value="1" id="quantity" name="cost"/>
+      {% endif %}
+      <input type="hidden" name="get_id" value="{{ product.id }}">
+      <input type="submit" value="Добавить в корзину">
+    </form>
+    {% if data_basket and p_id in data_basket %}
+      <p id="total-cost">Общая стоимость: <span id="total-cost-value">{{ product.price | int * data_basket[p_id] | int }} р.</span></p>
+    {% else %}
+      <p id="total-cost">Общая стоимость: <span id="total-cost-value">{{ product.price | int }} р.</span></p>
+    {% endif %}
+  </div>
+{% endblock %}
+
+
+{% block scripts %}
+  {% include 'slug/_scripts.html' %}
+{% endblock %}

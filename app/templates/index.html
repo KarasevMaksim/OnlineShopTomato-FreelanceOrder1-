@@ -38,7 +38,7 @@
   <div id="item-list">
     {% for product in products %}
       {% if product.is_active %}
-        <div>
+        <div onclick="location.href='{{ url_for('main.index') }}{{ product.id }}'">
           <h2>{{ product.name }}</h2>
           <p>Цена: {{ product.price }} р.</p>
           {% if product.about %}
