@@ -1,1 +1,21 @@
 {% extends "base.html" %}
+
+
+{% block content %}
+
+  {% for product, count in products_and_count %}
+    {% if product.is_active %}
+      <div onclick="location.href='{{ url_for('main.index') }}{{ product.id }}'">
+        <h2>{{ product.name }}</h2>
+        <p>Цена: {{ product.price }} р.</p>
+        {% if product.about %}
+          <p>Описание: {{ product.about }}</p>
+        {% endif %}
+        <div>
+          <img src="{{ url_for('static', filename=product.img_link) }}" alt="product_img">
+        </div>
+      </div>
+    {% endif %}
+  {% endfor %}
+
+{% endblock %}
