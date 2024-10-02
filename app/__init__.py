@@ -31,6 +31,9 @@ def create_app(config_class=Config):
 
     from app.slug import bp as slug_bp
     app.register_blueprint(slug_bp)
+
+    from app.basket import bp as basket_bp
+    app.register_blueprint(basket_bp)
     
     return app
 
