@@ -25,7 +25,11 @@
       <input type="hidden" name="get_id" value="{{ product.id }}">
       <input type="submit" value="Добавить в корзину">
     </form>
-    <p id="total-cost">Общая стоимость: <span id="total-cost-value">{{ product.price | int * data_basket[p_id] | int }} р.</span></p>
+    {% if data_basket and p_id in data_basket %}
+      <p id="total-cost">Общая стоимость: <span id="total-cost-value">{{ product.price | int * data_basket[p_id] | int }} р.</span></p>
+    {% else %}
+      <p id="total-cost">Общая стоимость: <span id="total-cost-value">{{ product.price | int }} р.</span></p>
+    {% endif %}
   </div>
 {% endblock %}
 
