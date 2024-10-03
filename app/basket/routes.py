@@ -44,3 +44,29 @@ def delete_product():
             )
         return response
     return redirect(url_for('basket.index'))
+
+
+@bp.route('/update-product-in-basket', methods=['POST'])
+def update_product_in_basket():
+    product_id = request.form.get('get_id')
+    cost = request.form.get('cost')
+    response = make_response(redirect(url_for('basket.index')))
+    if product_id and cost:
+        data_basket_json = request.cookies.get('data_basket')
+        if data_basket_json:
+            data_basket = json.loads(data_basket_json)
+            
+            if data_basket.get(product_id) == cost:
+                return redirect(url_for('basket.index'))
+
+            data_basket[product_id] = cost
+            data_basket_json = json.dumps(data_basket)
+            response.set_cookie(
+                'data_basket',
+                data_basket_json,
+                max_age=60*60*24
+            )
+            flash('Товары успешно обновлены!')
+            return response
+                
+    return abort(404)
