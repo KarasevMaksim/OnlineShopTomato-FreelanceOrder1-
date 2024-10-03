@@ -35,6 +35,12 @@
   {% endfor %}
   <div>
     <p id="total-cost-all-products">Итого: <span id="total-cost-all-products-value">0 р.</span></p>
+    <div>
+      <form method="post" action="{{ url_for('basket.by_basket') }}">
+        <input type="hidden" name="get_id" value="{{ 1 }}">
+        <button type="submit">Заказать</button>
+      </form>
+    </div>
   </div>
 
 {% endblock %}

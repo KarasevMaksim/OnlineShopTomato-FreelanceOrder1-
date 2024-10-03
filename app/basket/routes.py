@@ -70,3 +70,9 @@ def update_product_in_basket():
             return response
                 
     return abort(404)
+
+
+@bp.route('by-basket', methods=['POST'])
+def by_basket():
+    response = make_response()
+    return render_template('basket/by.html')
