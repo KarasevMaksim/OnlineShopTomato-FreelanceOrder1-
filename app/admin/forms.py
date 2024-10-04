@@ -114,6 +114,7 @@ class NewsForm(FlaskForm):
     ])
     submit = SubmitField('Создать')
     
+    
 class ContactsForm(FlaskForm):
     phone = StringField('Номер телефона', validators=[
         DataRequired(message='Поле не может быть пустым'),
@@ -123,4 +124,4 @@ class ContactsForm(FlaskForm):
         DataRequired(message='Поле не может быть пустым'),
         Length(min=1, max=100)
     ])
-    submit = SubmitField('Создать')
+    submit = SubmitField('Обновить')

@@ -5,7 +5,7 @@ from flask import (
 )
 from app.admin.forms import (
     AddProductForm, AddSectionsForm, AddSubSectionsForm, LoginForm,
-    ShowProductsForm, NewsForm
+    ShowProductsForm, NewsForm, ContactsForm
 )
 from app.admin import bp
 from flask_login import (
@@ -453,4 +453,34 @@ def delete_news():
         
     flash('Отметьте кнопку подтверждения!')
     return redirect(url_for('admin.add_news'))
+    
+    
+@bp.route('/update-contacts', methods=['GET', 'POST'])
+def update_contacts():
+    form = ContactsForm()
+    contact = Contacts.query.first()
+
+    if contact and request.method == 'GET':
+        form.phone.data = contact.phone
+        form.email.data = contact.email
+
+    if form.validate_on_submit():
+        try:
+            if contact:
+                contact.phone = form.phone.data
+                contact.email = form.email.data
+            else:
+                contact = Contacts(phone=form.phone.data, email=form.email.data)
+            db.session.add(contact)
+            db.session.commit()
+            return redirect(url_for('admin.update_contacts'))
+        except Exception as err:
+            print(err)
+            db.session.rollback()
+
+    return render_template(
+        'admin/contact.html',
+        contact=contact,
+        form=form
+    )
     
