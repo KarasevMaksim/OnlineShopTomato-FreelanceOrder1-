@@ -1,0 +1,46 @@
+{% extends 'admin/base.html' %}
+
+
+{% block content %}
+<div>
+  <a href="{{ url_for('admin.admin') }}">Вернуться назад</a>
+</div>
+<hr>
+<div>
+  <h2>Создать новость</h2>
+  <form action="" method="post">
+    {{ form.hidden_tag() }}
+    <p>
+      {{ form.name.label }}<br>
+      {{ form.name }}
+    </p>
+    <p>
+      {{ form.post.label }}<br>
+      {{ form.post }}
+    </p>
+    <p>
+      {{ form.submit }}
+    </p>
+  </form>
+</div>
+{% for message in get_flashed_messages() %}
+  <div class="alert alert-danger" style="color: red;" role="alert">
+    {{ message }}
+  </div>
+{% endfor %}
+<hr>
+<div>
+  {% for item in news %}
+    <div>
+      <h2>{{ item.name }}</h2>
+      <p>{{ item.post }}</p>
+      <form action="{{ url_for('admin.delete_news')}}" method="post">
+        <input type="hidden" name="get-id" value="{{ item.id }}">
+        <input type="checkbox" name="confirm" value="1">
+        <input type="submit" value="Удалить">
+      </form>
+      <hr>
+    </div>
+  {% endfor %}
+</div>
+{% endblock %}

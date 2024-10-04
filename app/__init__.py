@@ -35,6 +35,9 @@ def create_app(config_class=Config):
     from app.basket import bp as basket_bp
     app.register_blueprint(basket_bp)
     
+    from app.news import bp as news_bp
+    app.register_blueprint(news_bp)
+    
     return app
 
 
