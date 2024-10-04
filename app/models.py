@@ -93,7 +93,6 @@ class Products(db.Model):
     name: so.Mapped[str] = so.mapped_column(sa.String(300))
     price: so.Mapped[int] = so.mapped_column(sa.Integer)
     about: so.Mapped[Optional[str]] = so.mapped_column(sa.Text)
-    link: so.Mapped[Optional[str]] = so.mapped_column(sa.String(100))
     img_link: so.Mapped[str] = so.mapped_column(sa.String(100))
     is_active: so.Mapped[bool] = so.mapped_column(default=True)
 
@@ -126,3 +125,23 @@ class SectionProductAssociation(db.Model):
         sa.ForeignKey('product.id'),
         primary_key=True
     )
+
+    
+class News(db.Model):
+    __tablename__ = 'news'
+    id: so.Mapped[int] = so.mapped_column(
+       primary_key=True,
+       autoincrement=True 
+    )
+    name: so.Mapped[str] = so.mapped_column(sa.String(300))
+    post: so.Mapped[str] = so.mapped_column(sa.Text)
+
+
+class Contacts(db.Model):
+    __tablename__ = 'contact'
+    id: so.Mapped[int] = so.mapped_column(
+        primary_key=True,
+        autoincrement=True
+    )
+    phone: so.Mapped[str] = so.mapped_column(sa.String(50))
+    email: so.Mapped[str] = so.mapped_column(sa.String(100))
