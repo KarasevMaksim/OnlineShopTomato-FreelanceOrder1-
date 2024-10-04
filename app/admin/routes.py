@@ -406,7 +406,7 @@ def update_product_status():
     return abort(403)
     
 
-@bp.route('add-news')
+@bp.route('add-news', methods=['GET', 'POST'])
 @login_required
 def add_news():
     if not current_user.is_admin:
@@ -414,14 +414,43 @@ def add_news():
     form = NewsForm()
     news = News.query.all()[::-1]
     if form.validate_on_submit():
-        pass
-    
+        new_news = News()
+        new_news.name = form.name.data
+        new_news.post = form.post.data
+        try:
+            db.session.add(new_news)
+            db.session.commit()
+        except Exception as err:
+            db.session.rollback()
+            print(err)
+        return redirect(url_for('admin.add_news'))
     
     return render_template(
         'admin/news.html',
         form=form,
         news=news
-
     )
 
+
+@bp.route('delete-news', methods=['POST'])
+def delete_news():
+    news_id = request.form.get('get-id')
+    confirm = request.form.get('confirm')
+    
+    if confirm:
+        try:
+            news = News.query.filter(News.id == news_id).first()
+            db.session.delete(news) 
+            db.session.commit()
+        except Exception as err:
+            db.session.rollback()
+            print(err)
+            flash('Ошибка удаления!')
+            return redirect(url_for('admin.add_news'))
+
+        flash('Новость удалена!')
+        return redirect(url_for('admin.add_news'))
+        
+    flash('Отметьте кнопку подтверждения!')
+    return redirect(url_for('admin.add_news'))
     

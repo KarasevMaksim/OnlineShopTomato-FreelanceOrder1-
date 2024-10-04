@@ -109,10 +109,10 @@ class NewsForm(FlaskForm):
         DataRequired(message='Поле не может быть пустым'),
         Length(min=1, max=300)
     ])
-    post = StringField('Новость: ', validators=[
+    post = TextAreaField('Новость: ', validators=[
         DataRequired(message='Поле не может быть пустым')
     ])
-    
+    submit = SubmitField('Создать')
     
 class ContactsForm(FlaskForm):
     phone = StringField('Номер телефона', validators=[
@@ -123,3 +123,4 @@ class ContactsForm(FlaskForm):
         DataRequired(message='Поле не может быть пустым'),
         Length(min=1, max=100)
     ])
+    submit = SubmitField('Создать')
