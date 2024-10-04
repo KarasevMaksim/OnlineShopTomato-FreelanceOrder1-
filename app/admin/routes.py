@@ -5,14 +5,14 @@ from flask import (
 )
 from app.admin.forms import (
     AddProductForm, AddSectionsForm, AddSubSectionsForm, LoginForm,
-    ShowProductsForm
+    ShowProductsForm, NewsForm
 )
 from app.admin import bp
 from flask_login import (
     current_user, login_user, logout_user, login_required
 )
 from app import db, login
-from app.models import Sections, SubSections, Users, Products
+from app.models import Sections, SubSections, Users, Products, News, Contacts
 from app.admin.funcs import (
     save_product_img, resized_image, delete_paths_to_img, delete_product_img
 )
@@ -404,4 +404,24 @@ def update_product_status():
         return redirect(url_for('admin.admin'))
     
     return abort(403)
+    
+
+@bp.route('add-news')
+@login_required
+def add_news():
+    if not current_user.is_admin:
+        return abort(403)
+    form = NewsForm()
+    news = News.query.all()[::-1]
+    if form.validate_on_submit():
+        pass
+    
+    
+    return render_template(
+        'admin/news.html',
+        form=form,
+        news=news
+
+    )
+
     
