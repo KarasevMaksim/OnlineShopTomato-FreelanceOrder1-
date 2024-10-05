@@ -6,6 +6,7 @@
   <div>
     <h2>Обновить информацию для страницы "О магазине"</h2>
     <form action="" method="post">
+      {{ form.hidden_tag() }}
       <p>
         {{ form.about.label }}<br>
         {{ form.about }}

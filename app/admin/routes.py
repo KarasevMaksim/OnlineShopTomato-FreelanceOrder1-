@@ -526,7 +526,7 @@ def update_sell_and_by():
     if form.validate_on_submit():
         try:
             if sell_and_by:
-                sell_and_by = form.sell_and_by.data
+                sell_and_by.sell_and_by = form.sell_and_by.data
             else:
                 sell_and_by = SellAndBy(sell_and_by=form.sell_and_by.data)
             db.session.add(sell_and_by)
