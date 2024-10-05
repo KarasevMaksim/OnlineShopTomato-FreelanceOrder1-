@@ -4,10 +4,10 @@ from flask import (
     flash
 )
 import sqlalchemy as sa
-from app.models import Products, Sections, SubSections
+from app.models import Products, Sections, SubSections, Contacts
 from app.main import bp
 from app.main.forms import (
-    ShowProductsForm, SearchForm
+    ShowProductsForm, SearchForm, ContactMessageForm
 )
 
 
@@ -155,9 +155,19 @@ def search():
     )
 
     
-@bp.route('/contacts')
+@bp.route('/contacts', methods=['GET', 'POST'])
 def contacts():
-    return render_template('contacts.html')
+    form = ContactMessageForm()
+    contacts = Contacts.query.first()
+    
+    if form.validate_on_submit():
+        return redirect(url_for('main.contacts'))
+
+    return render_template(
+        'contacts.html',
+        contacts=contacts,
+        form=form
+    )
 
     
 @bp.route('/more-info')

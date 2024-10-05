@@ -1,1 +1,41 @@
 {% extends "base.html" %}
+
+
+{% block content %}
+  <h2>Наши контакты</h2>
+  <div>
+    <p>
+      {{ contacts.phone }}
+    </p>
+    <p>
+      {{ contacts.email }}
+    </p>
+  </div>
+  <div>
+    <h2>Форма для обратной связи</h2>
+    <form action="" method="post">
+    <div>
+      {{ form.hidden_tag() }}
+      <p>
+        {{ form.name.label }}<br>
+        {{ form.name }}
+      </p>
+      <p>
+        {{ form.email.label }}<br>
+        {{ form.email }}
+      </p>
+      <p>
+        {{ form.theme.label }}<br>
+        {{ form.theme }}
+      </p>
+      <p>
+        {{ form.message.label }}<br>
+        {{ form.message }}
+      </p>
+      <p>
+        {{ form.submit }}
+      </p>
+    </div>
+    </form>
+  </div>
+{% endblock %}
