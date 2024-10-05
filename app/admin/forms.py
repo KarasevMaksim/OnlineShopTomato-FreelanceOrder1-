@@ -142,7 +142,7 @@ class AboutForm(FlaskForm):
 
 
 class SellAndByForm(FlaskForm):
-    about = TextAreaField(
+    sell = TextAreaField(
         'Введите новый текст для страницы "Доставка и оплата"',
         validators=
         [
