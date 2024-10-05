@@ -1,6 +1,5 @@
 from flask import (
-    render_template, url_for, request, jsonify, make_response, redirect, abort,
-    flash
+    render_template
 )
 from app.models import News
 from app.news import bp
@@ -8,7 +7,7 @@ from app.news import bp
 
 @bp.route('/')
 def index():
-    news = News.query.all()
+    news = News.query.all()[::-1]
     print(news[0].post)
     return render_template(
         'news/news.html',
