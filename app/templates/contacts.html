@@ -19,18 +19,38 @@
       <p>
         {{ form.name.label }}<br>
         {{ form.name }}
+        {% for error in form.name.errors %}
+          <div class="alert alert-danger" role="alert", style="color:red">
+            {{ error }}
+          </div>
+        {% endfor %}
       </p>
       <p>
         {{ form.email.label }}<br>
         {{ form.email }}
+        {% for error in form.email.errors %}
+          <div class="alert alert-danger" role="alert", style="color:red">
+            {{ error }}
+          </div>
+        {% endfor %}
       </p>
       <p>
         {{ form.theme.label }}<br>
         {{ form.theme }}
+        {% for error in form.theme.errors %}
+          <div class="alert alert-danger" role="alert", style="color:red">
+            {{ error }}
+          </div>
+        {% endfor %}
       </p>
       <p>
         {{ form.message.label }}<br>
         {{ form.message }}
+        {% for error in form.message.errors %}
+          <div class="alert alert-danger" role="alert", style="color:red">
+            {{ error }}
+          </div>
+        {% endfor %}
       </p>
       <p>
         {{ form.submit }}
