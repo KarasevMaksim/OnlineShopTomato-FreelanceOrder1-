@@ -498,7 +498,7 @@ def update_about():
     if form.validate_on_submit():
         try:
             if about:
-                about.about = form.phone.data
+                about.about = form.about.data
             else:
                 about = About(about=form.about.data)
             db.session.add(about)
@@ -511,6 +511,34 @@ def update_about():
     return render_template(
         'admin/about.html',
         about=about,
+        form=form
+    )
+   
+   
+@bp.route('/update-sell-and-by', methods=['GET', 'POST'])
+def update_sell_and_by():
+    form = SellAndByForm()
+    sell_and_by = SellAndBy.query.first()
+
+    if sell_and_by and request.method == 'GET':
+        form.sell_and_by.data = sell_and_by.sell_and_by
+
+    if form.validate_on_submit():
+        try:
+            if sell_and_by:
+                sell_and_by = form.sell_and_by.data
+            else:
+                sell_and_by = SellAndBy(sell_and_by=form.sell_and_by.data)
+            db.session.add(sell_and_by)
+            db.session.commit()
+            return redirect(url_for('admin.update_sell_and_by'))
+        except Exception as err:
+            print(err)
+            db.session.rollback()
+
+    return render_template(
+        'admin/sell_and_by.html',
+        sell_and_by=sell_and_by,
         form=form
     )
     
