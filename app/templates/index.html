@@ -18,6 +18,13 @@
     </form>
   </div>
   <div>
+    <h2>Последняя новость</h2>
+    <p>
+      <h3>{{ last_news.name }}</h3>
+      {{ last_news.post }}
+    </p>
+  </div>
+  <div>
     <h2>Выбрать товар из категории</h2>
     <form action="/update-puduct" method="post">
       {{ form.hidden_tag() }}

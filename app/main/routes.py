@@ -5,7 +5,7 @@ from flask import (
 )
 import sqlalchemy as sa
 from app.models import (
-    Products, Sections, SubSections, Contacts, About, SellAndBy
+    Products, Sections, SubSections, Contacts, About, SellAndBy, News
 )
 from app.main import bp
 from app.main.forms import (
@@ -15,6 +15,7 @@ from app.main.forms import (
 
 @bp.route('/', methods=['GET', 'POST'])
 def index():
+    last_news = News.query.all()[-1]
     title = 'Tomato'
     form = ShowProductsForm()
     form2 = SearchForm()
@@ -70,7 +71,8 @@ def index():
         title=title,
         form=form,
         form2=form2,
-        products=products
+        products=products,
+        last_news=last_news
     )
 
 
