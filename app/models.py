@@ -145,3 +145,21 @@ class Contacts(db.Model):
     )
     phone: so.Mapped[str] = so.mapped_column(sa.String(50))
     email: so.Mapped[str] = so.mapped_column(sa.String(100))
+
+
+class About(db.Model):
+    __tablename__ = 'about'
+    id: so.Mapped[int] = so.mapped_column(
+       primary_key=True,
+       autoincrement=True 
+    )
+    about: so.Mapped[str] = so.mapped_column(sa.Text)
+
+
+class SellAndBy(db.Model):
+    __tablename__ = 'sell_and_by'
+    id: so.Mapped[int] = so.mapped_column(
+       primary_key=True,
+       autoincrement=True 
+    )
+    sell_and_by: so.Mapped[str] = so.mapped_column(sa.Text)

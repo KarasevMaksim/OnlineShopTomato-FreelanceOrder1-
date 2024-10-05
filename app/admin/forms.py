@@ -125,3 +125,31 @@ class ContactsForm(FlaskForm):
         Length(min=1, max=100)
     ])
     submit = SubmitField('Обновить')
+
+
+class AboutForm(FlaskForm):
+    about = TextAreaField(
+        'Введите новый текст для страницы "О нас"',
+        validators=
+        [
+            DataRequired(message='Поле не может быть пустым'),
+            Length(min=1, max=10000, message=
+                   'Лимит символов от 1 до 10000 символов'
+            )
+        ]
+    )
+    submit = SubmitField('Применить')
+
+
+class SellAndByForm(FlaskForm):
+    sell_and_by = TextAreaField(
+        'Введите новый текст для страницы "Доставка и оплата"',
+        validators=
+        [
+            DataRequired(message='Поле не может быть пустым'),
+            Length(min=1, max=10000, message=
+                   'Лимит символов от 1 до 10000 символов'
+            )
+        ]
+    )
+    submit = SubmitField('Применить')
