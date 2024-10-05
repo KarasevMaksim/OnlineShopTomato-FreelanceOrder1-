@@ -2,4 +2,15 @@
 
 
 {% block content %}
+  <h2>Доставка и оплата</h2>
+  <div>
+    <div>
+      <p>
+        {{ sell_and_by.sell_and_by }}
+      </p>
+    </div>
+    <div>
+      <a href="{{ url_for('main.more_info') }}">О магазине</a>
+    </div>
+  </div>
 {% endblock %}

@@ -4,7 +4,9 @@ from flask import (
     flash
 )
 import sqlalchemy as sa
-from app.models import Products, Sections, SubSections, Contacts
+from app.models import (
+    Products, Sections, SubSections, Contacts, About, SellAndBy
+)
 from app.main import bp
 from app.main.forms import (
     ShowProductsForm, SearchForm, ContactMessageForm
@@ -172,9 +174,17 @@ def contacts():
     
 @bp.route('/more-info')
 def more_info():
-    return render_template('more_info.html')
+    about = About.query.first()
+    return render_template(
+        'more_info.html',
+        about=about
+    )
     
 
 @bp.route('/sell-and-by')
 def sell_and_by():
-    return render_template('sell_and_by.html')
+    sell_and_by = SellAndBy.query.first()
+    return render_template(
+        'sell_and_by.html',
+        sell_and_by=sell_and_by
+    )
