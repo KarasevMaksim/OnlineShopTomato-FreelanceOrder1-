@@ -3,4 +3,16 @@
 
 {% block content %}
   <a href="{{ url_for('admin.admin') }}">Вурнуться назад</a>
+  <div>
+    <h2>Обновить информацию для страницы "О магазине"</h2>
+    <form action="" method="post">
+      <p>
+        {{ form.about.label }}<br>
+        {{ form.about }}
+      </p>
+      <p>
+        {{ form.submit }}
+      </p>
+    </form>
+  </div>
 {% endblock %}
