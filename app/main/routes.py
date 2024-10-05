@@ -174,3 +174,7 @@ def contacts():
 def more_info():
     return render_template('more_info.html')
     
+
+@bp.route('/sell-and-by')
+def sell_and_by():
+    return render_template('sell_and_by.html')
