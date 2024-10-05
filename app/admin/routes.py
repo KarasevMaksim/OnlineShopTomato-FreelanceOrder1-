@@ -5,14 +5,14 @@ from flask import (
 )
 from app.admin.forms import (
     AddProductForm, AddSectionsForm, AddSubSectionsForm, LoginForm,
-    ShowProductsForm
+    ShowProductsForm, NewsForm, ContactsForm
 )
 from app.admin import bp
 from flask_login import (
     current_user, login_user, logout_user, login_required
 )
 from app import db, login
-from app.models import Sections, SubSections, Users, Products
+from app.models import Sections, SubSections, Users, Products, News, Contacts
 from app.admin.funcs import (
     save_product_img, resized_image, delete_paths_to_img, delete_product_img
 )
@@ -404,4 +404,83 @@ def update_product_status():
         return redirect(url_for('admin.admin'))
     
     return abort(403)
+    
+
+@bp.route('add-news', methods=['GET', 'POST'])
+@login_required
+def add_news():
+    if not current_user.is_admin:
+        return abort(403)
+    form = NewsForm()
+    news = News.query.all()[::-1]
+    if form.validate_on_submit():
+        new_news = News()
+        new_news.name = form.name.data
+        new_news.post = form.post.data
+        try:
+            db.session.add(new_news)
+            db.session.commit()
+        except Exception as err:
+            db.session.rollback()
+            print(err)
+        return redirect(url_for('admin.add_news'))
+    
+    return render_template(
+        'admin/news.html',
+        form=form,
+        news=news
+    )
+
+
+@bp.route('delete-news', methods=['POST'])
+def delete_news():
+    news_id = request.form.get('get-id')
+    confirm = request.form.get('confirm')
+    
+    if confirm:
+        try:
+            news = News.query.filter(News.id == news_id).first()
+            db.session.delete(news) 
+            db.session.commit()
+        except Exception as err:
+            db.session.rollback()
+            print(err)
+            flash('Ошибка удаления!')
+            return redirect(url_for('admin.add_news'))
+
+        flash('Новость удалена!')
+        return redirect(url_for('admin.add_news'))
+        
+    flash('Отметьте кнопку подтверждения!')
+    return redirect(url_for('admin.add_news'))
+    
+    
+@bp.route('/update-contacts', methods=['GET', 'POST'])
+def update_contacts():
+    form = ContactsForm()
+    contact = Contacts.query.first()
+
+    if contact and request.method == 'GET':
+        form.phone.data = contact.phone
+        form.email.data = contact.email
+
+    if form.validate_on_submit():
+        try:
+            if contact:
+                contact.phone = form.phone.data
+                contact.email = form.email.data
+            else:
+                contact = Contacts(phone=form.phone.data, email=form.email.data)
+            db.session.add(contact)
+            db.session.commit()
+            return redirect(url_for('admin.update_contacts'))
+        except Exception as err:
+            print(err)
+            db.session.rollback()
+
+    return render_template(
+        'admin/contact.html',
+        contact=contact,
+        form=form
+    )
     

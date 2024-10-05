@@ -102,3 +102,26 @@ class AddSubSectionsForm(FlaskForm):
         sub_sections = SubSections.query.filter(SubSections.name == name.data.lower()).first()
         if sub_sections:
             raise ValidationError('Данная подкатегория уже существует!')
+
+
+class NewsForm(FlaskForm):
+    name = StringField('Название новости: ', validators=[
+        DataRequired(message='Поле не может быть пустым'),
+        Length(min=1, max=300)
+    ])
+    post = TextAreaField('Новость: ', validators=[
+        DataRequired(message='Поле не может быть пустым')
+    ])
+    submit = SubmitField('Создать')
+    
+    
+class ContactsForm(FlaskForm):
+    phone = StringField('Номер телефона', validators=[
+        DataRequired(message='Поле не может быть пустым'),
+        Length(min=1, max=50)
+    ])
+    email = StringField("Почта", validators=[
+        DataRequired(message='Поле не может быть пустым'),
+        Length(min=1, max=100)
+    ])
+    submit = SubmitField('Обновить')

@@ -11,7 +11,6 @@
     </title>
     
     {% block styles %}
-    <!-- CSS styles -->
     {% endblock %}
   </head>
   <body>
@@ -21,13 +20,13 @@
         <a href="{{ url_for('main.contacts') }}">Контакты</a>
         <a href="{{ url_for('main.more_info') }}">О нас</a>
         <a href="{{ url_for('news.index') }}">Новости</a>
+        <a href="{{ url_for('basket.index') }}">Корзина</a>
         <h1>Welcome to My Website</h1>
       {% endblock %}
     </header>
     
     <main>
       {% block content %}
-        <!-- Your content here -->
       {% endblock %}
     </main>
     
@@ -38,7 +37,6 @@
     </footer>
 
     {% block scripts %}
-    <!-- JS scripts here -->
     {% endblock %}
   </body>
 </html>

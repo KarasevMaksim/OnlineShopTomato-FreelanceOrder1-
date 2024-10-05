@@ -1,0 +1,27 @@
+{% extends 'admin/base.html' %}
+
+
+{% block content %}
+<div>
+  <a href="{{ url_for('admin.admin') }}">Вернуться назад</a>
+</div>
+<div>
+  <h2>Обновить контакты</h2>
+  <form action="{{ url_for('admin.update_contacts') }}" method="post">
+    {{ form.hidden_tag() }}
+    <p>
+      {{ form.phone.label }}<br>
+      {{ form.phone }}
+    </p>
+    <p>
+      {{ form.email.label }}<br>
+      {{ form.email }}
+    </p>
+    <p>
+      {{ form.submit }}
+    </p>
+  </form>
+</div>
+<hr>
+
+{% endblock %}
