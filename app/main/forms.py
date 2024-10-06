@@ -65,6 +65,7 @@ class ContactMessageForm(FlaskForm):
     )
     
     phone_number = TelField('Номер телефона', validators=[
+        DataRequired(message='Поле не может быть пустым'),
         Length(min=10, max=15, message=
                'Номер телефона должен быть от 10 до 15 символов'
         ),
@@ -92,11 +93,11 @@ class ContactMessageForm(FlaskForm):
                                    message='Поле не может быть пустым'),
                                 Length(
                                     min=3,
-                                    max=5000,
-                                    message='Ввод разрешен: от 3, до 5000 символов'
+                                    max=3000,
+                                    message='Ввод разрешен: от 3, до 3000 символов'
                                 ),
                                 Regexp(
-                                    r'^[а-яА-Яa-zA-Z0-9\s\.,\-;:]+$',
+                                    r'^[а-яА-Яa-zA-Z0-9\s\.,!?-]+$',
                                     message='Введен неподдерживаемый символ'
                                 )
                                ]

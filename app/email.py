@@ -20,7 +20,7 @@ def send_mail(subject, recipients, text_body=0, html_body=0):
     return True
 
 
-def msg_for_contacts(theme, name, email, message):
+def msg_for_contacts(theme, name, email, phone, message):
     return f'''
 <!DOCTYPE html>
 <html>
@@ -49,6 +49,7 @@ def msg_for_contacts(theme, name, email, message):
     <h2>{theme}</h2>
     Имя отправителя: {name}<br>
     Email отпровителя: {email}<br>
+    Номер телефона отправителя: {phone}<br>
     <hr>
   </p>
   <p>

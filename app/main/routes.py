@@ -1,7 +1,7 @@
 import json
 from flask import (
     render_template, url_for, request, jsonify, make_response, redirect, abort,
-    flash
+    flash, session
 )
 import sqlalchemy as sa
 from app.models import (
@@ -165,9 +165,6 @@ def search():
 def contacts():
     form = ContactMessageForm()
     contacts = Contacts.query.first()
-    
-    if form.validate_on_submit():
-        return redirect(url_for('main.contacts'))
 
     return render_template(
         'contacts.html',
@@ -175,15 +172,17 @@ def contacts():
         form=form
     )
     
-    
+
 @bp.route('/contacts-send-mail', methods=['POST'])
 def contacts_send_mail():
     form = ContactMessageForm()
+    
     if form.validate_on_submit():
         msg = email.msg_for_contacts(
             form.theme.data,
             form.name.data,
             form.email.data,
+            form.phone_number.data,
             form.message.data
         )
         status = email.send_mail(
@@ -197,6 +196,9 @@ def contacts_send_mail():
         else:
             flash('Ошибка отправления!')
             return redirect(url_for('main.contacts'))
+    
+
+    return render_template('contacts.html', form=form, contacts=Contacts.query.first())
 
     
 @bp.route('/more-info')
