@@ -58,3 +58,66 @@ def msg_for_contacts(theme, name, email, phone, message):
 </body>
 </html>
         '''
+
+        
+def msg_basket_for_admin(name, email, phone, total_sum, products):
+    def create_dop_msg(item):
+        text = f'''
+        <div>
+          <p>
+            Название товара: {item['name']}<br>
+            Цена товара: {item['price']} р.<br>
+            Количество твара: {item['count']}<br>
+            Общая цена: {item['total']} р.<br>
+            Категория: {item['section']}<br>
+            Под Категория: {item['sub_section']}<br>
+            Ссылка на товар: {item['link']}<br>
+          </p>
+          <hr>
+        </div>
+        '''
+        return text
+      
+    base_msg = f'''
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Заказ в магазине!</title>
+      <style>
+        body {{
+          font-family: Arial, sans-serif;
+          font-size: 14px;
+          line-height: 1.5;
+        }}
+        a {{
+          color: #337ab7;
+          text-decoration: none;
+        }}
+        a:hover {{
+          color: #23527c;
+        }}
+      </style>
+    </head>
+    <body>
+      <!-- Основное содержимое письма -->
+      <p>
+        <h2>Заказ в магазине!</h2>
+        Имя отправителя: {name}<br>
+        Email отпровителя: {email}<br>
+        Номер телефона отправителя: {phone}<br>
+        <hr>
+      </p>'''
+        
+    dop_msg = [create_dop_msg(i) for i in products]
+    dop_msg = ''.join(dop_msg)
+    
+    lust_msg = f'''
+        <div>
+          <h3>Итого: {total_sum} р.</h3>
+        </div>
+      </body>
+    </html>'''
+    
+    return base_msg + dop_msg + lust_msg

@@ -6,7 +6,9 @@ from flask import (
 )
 from app.models import Products, Sections, SubSections
 from app.basket import bp
+from app.email import send_mail, msg_basket_for_admin
 from app.basket.forms import PlaceAnOrder
+from config import Config
 
 
 @bp.route('/')
@@ -77,5 +79,46 @@ def update_product_in_basket():
 
 @bp.route('by-basket', methods=['POST'])
 def by_basket():
+    form = PlaceAnOrder()
+    def query_products(p_id, count):
+        product = Products.query.filter(Products.id == p_id).first()
+        product_dict = {
+           'name': product.name,
+           'price': product.price,
+           'count': count,
+           'total': int(count) * int(product.price),
+           'section': product.section.name,
+           'sub_section': product.sub_section.name,
+           'link': f'http://127.0.0.1:5000/{product.id}'
+        }
+        return product_dict
+        
     response = make_response()
-    return render_template('basket/by.html')
+    
+    data_basket_json = request.cookies.get('data_basket')
+    if data_basket_json:
+        data_basket = json.loads(data_basket_json)
+        products = tuple(map(
+            lambda items: query_products(items[0], items[1]),
+            data_basket.items()
+            )
+        )
+        name = form.name.data
+        email = form.email.data
+        phone = form.phone_number.data
+        total_sum = sum(map(lambda x: x['total'], products))
+
+        print('\n', products, total_sum, '\n\n')
+        
+        admin_msg = msg_basket_for_admin(name, email, phone, total_sum, products)
+        
+        send_mail(
+            'Заказ в магазине!',
+            [Config.MAIL_USERNAME],
+            html_body=admin_msg
+        )
+        return render_template('basket/by.html')
+    
+    return redirect(url_for('basket.index'))
+    
+    
