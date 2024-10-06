@@ -41,4 +41,4 @@ class PlaceAnOrder(FlaskForm):
         )]
     )
     
-    submit = SubmitField('Отправить')
+    submit = SubmitField('Заказать!')

@@ -36,9 +36,44 @@
   <div>
     <p id="total-cost-all-products">Итого: <span id="total-cost-all-products-value">0 р.</span></p>
     <div>
+      <h2>Оформить Заказ!</h2>
       <form method="post" action="{{ url_for('basket.by_basket') }}">
-        <input type="hidden" name="get_id" value="{{ 1 }}">
-        <button type="submit">Заказать</button>
+        {{ form.hidden_tag() }}
+        <p>
+          {{ form.name.label }}<br>
+          {{ form.name }}
+          {% for error in form.name.errors %}
+            <div class="alert alert-danger" role="alert", style="color:red">
+              {{ error }}
+            </div>
+          {% endfor %}
+        </p>
+        <p>
+          {{ form.email.label }}<br>
+          {{ form.email }}
+          {% for error in form.email.errors %}
+            <div class="alert alert-danger" role="alert", style="color:red">
+              {{ error }}
+            </div>
+          {% endfor %}
+        </p>
+        <p>
+          {{ form.phone_number.label }}<br>
+          {{ form.phone_number }}
+          {% for error in form.phone_number.errors %}
+            <div class="alert alert-danger" role="alert", style="color:red">
+              {{ error }}
+            </div>
+          {% endfor %}
+        </p>
+        <div>
+          <a href="{{ url_for('main.sell_and_by') }}">Перед заказом ознакомьтесь с условиями "Оплаты и Доставки!</a>
+        <p>
+          {{ form.submit }}
+        </p>
+        {% for message in get_flashed_messages() %}
+          <div style="color: red;">{{ message }}</div>
+        {% endfor %}
       </form>
     </div>
   </div>

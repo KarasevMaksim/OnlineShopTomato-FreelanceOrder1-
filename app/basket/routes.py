@@ -6,10 +6,12 @@ from flask import (
 )
 from app.models import Products, Sections, SubSections
 from app.basket import bp
+from app.basket.forms import PlaceAnOrder
 
 
 @bp.route('/')
 def index():
+    form = PlaceAnOrder()
     products_and_count = list()
     data_basket = request.cookies.get('data_basket')
     if data_basket:
@@ -21,7 +23,8 @@ def index():
     
     return render_template(
         'basket/basket.html',
-        products_and_count=products_and_count
+        products_and_count=products_and_count,
+        form=form
     )
     
     
