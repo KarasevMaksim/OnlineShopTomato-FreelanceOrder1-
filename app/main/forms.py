@@ -3,7 +3,7 @@ import re
 from flask_wtf import FlaskForm
 from wtforms import (
     StringField, PasswordField, BooleanField, SelectField, SubmitField,
-    TextAreaField, FileField, EmailField
+    TextAreaField, TelField, EmailField
 )
 from wtforms.validators import (
     ValidationError, DataRequired, Length, Regexp, Optional, Email
@@ -63,6 +63,16 @@ class ContactMessageForm(FlaskForm):
                             message='Не верный адресс'  
                         )]
     )
+    
+    phone_number = TelField('Номер телефона', validators=[
+        Length(min=10, max=15, message=
+               'Номер телефона должен быть от 10 до 15 символов'
+        ),
+        Regexp(r'^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$', message=
+               'Некорректный формат номера телефона'
+        )]
+    )
+    
     theme = StringField('Тема обращения', validators=
                                [DataRequired(
                                    message='Поле не может быть пустым'),
