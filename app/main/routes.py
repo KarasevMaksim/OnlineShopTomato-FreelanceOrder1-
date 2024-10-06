@@ -11,6 +11,8 @@ from app.main import bp
 from app.main.forms import (
     ShowProductsForm, SearchForm, ContactMessageForm
 )
+from app import email
+from config import Config
 
 
 @bp.route('/', methods=['GET', 'POST'])
@@ -172,6 +174,29 @@ def contacts():
         contacts=contacts,
         form=form
     )
+    
+    
+@bp.route('/contacts-send-mail', methods=['POST'])
+def contacts_send_mail():
+    form = ContactMessageForm()
+    if form.validate_on_submit():
+        msg = email.msg_for_contacts(
+            form.theme.data,
+            form.name.data,
+            form.email.data,
+            form.message.data
+        )
+        status = email.send_mail(
+            'Сообщение из раздела "Контакты и Обратная связь"',
+            [Config.MAIL_USERNAME],
+            html_body=msg
+        )
+        if status == 1:
+            flash('Сообщение отправлено!')
+            return redirect(url_for('main.contacts'))
+        else:
+            flash('Ошибка отправления!')
+            return redirect(url_for('main.contacts'))
 
     
 @bp.route('/more-info')

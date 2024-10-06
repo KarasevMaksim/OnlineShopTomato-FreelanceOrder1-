@@ -18,3 +18,42 @@ def send_mail(subject, recipients, text_body=0, html_body=0):
     except Exception as err:
         return err
     return True
+
+
+def msg_for_contacts(theme, name, email, message):
+    return f'''
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{theme}</title>
+  <style>
+    body {{
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      line-height: 1.5;
+    }}
+    a {{
+      color: #337ab7;
+      text-decoration: none;
+    }}
+    a:hover {{
+      color: #23527c;
+    }}
+  </style>
+</head>
+<body>
+  <!-- Основное содержимое письма -->
+  <p>
+    <h2>{theme}</h2>
+    Имя отправителя: {name}<br>
+    Email отпровителя: {email}<br>
+    <hr>
+  </p>
+  <p>
+    {message}
+  </p>
+</body>
+</html>
+        '''

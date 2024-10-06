@@ -46,8 +46,8 @@ class ContactMessageForm(FlaskForm):
                                    message='Поле не может быть пустым'),
                                 Length(
                                     min=3,
-                                    max=20,
-                                    message='Ввод разрешен: от 3, до 20 символов'
+                                    max=50,
+                                    message='Ввод разрешен: от 3, до 50 символов'
                                 ),
                                 Regexp(
                                     r'^[а-яА-Яa-zA-Z0-9\s]+$',
@@ -82,8 +82,8 @@ class ContactMessageForm(FlaskForm):
                                    message='Поле не может быть пустым'),
                                 Length(
                                     min=3,
-                                    max=100,
-                                    message='Ввод разрешен: от 3, до 20 символов'
+                                    max=5000,
+                                    message='Ввод разрешен: от 3, до 5000 символов'
                                 ),
                                 Regexp(
                                     r'^[а-яА-Яa-zA-Z0-9\s\.,\-;:]+$',
