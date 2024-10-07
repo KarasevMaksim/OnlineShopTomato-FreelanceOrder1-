@@ -4,7 +4,7 @@ from flask import (
     render_template, url_for, request, jsonify, make_response, redirect, abort,
     flash
 )
-from app.models import Products, Sections, SubSections, HistoryProducts
+from app.models import Products, Sections, HistorySales, HistoryProducts
 from app import db
 from app.basket import bp
 from app.email import send_mail, msg_basket_for_admin, msg_basket_for_user
@@ -125,8 +125,9 @@ def by_basket():
         phone = form.phone_number.data
         total_sum = sum(map(lambda x: x['total'], products))
         
-        for product in products:
-            try:
+        try:
+            sales = HistorySales()
+            for product in products:
                 history = HistoryProducts()
                 history.name_user = name
                 history.email_user = email
@@ -140,16 +141,15 @@ def by_basket():
                 history.section = product['section']
                 history.sub_section = product['sub_section']
                 history.link_to_product = product['link']
-                db.session.add(history)
-                db.session.commit()
-            except Exception as err:
-                db.session.rollback()
-                print(err)
+                sales.h_prod.append(history)
+            db.session.add(sales)
+            db.session.commit()
+        except Exception as err:
+            db.session.rollback()
+            print(err)
         
         admin_msg = msg_basket_for_admin(name, email, phone, total_sum, products)
         user_msg = msg_basket_for_user(name, total_sum, products)
-        print(admin_msg)
-        print(user_msg)
         send_mail(
             'Заказ в магазине!',
             [Config.MAIL_USERNAME],
