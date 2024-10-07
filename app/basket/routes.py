@@ -4,7 +4,8 @@ from flask import (
     render_template, url_for, request, jsonify, make_response, redirect, abort,
     flash
 )
-from app.models import Products, Sections, SubSections
+from app.models import Products, Sections, SubSections, HistoryProducts
+from app import db
 from app.basket import bp
 from app.email import send_mail, msg_basket_for_admin, msg_basket_for_user
 from app.basket.forms import PlaceAnOrder
@@ -89,8 +90,10 @@ def by_basket():
            'total': int(count) * int(product.price),
            'section': product.section.name,
            'sub_section': product.sub_section.name,
-           'link': f'http://127.0.0.1:5000/{product.id}',
-           'img_link': url_for('static', filename=product.img_link)
+           'link': f'{Config.DOMAIN}{product.id}',
+           'img_link': Config.DOMAIN[:len(Config.DOMAIN) - 1] + url_for(
+               'static', filename=product.img_link
+               )
         }
         return product_dict
         
@@ -122,8 +125,31 @@ def by_basket():
         phone = form.phone_number.data
         total_sum = sum(map(lambda x: x['total'], products))
         
+        for product in products:
+            try:
+                history = HistoryProducts()
+                history.name_user = name
+                history.email_user = email
+                history.phone_user = str(phone)
+                history.name_product = product['name']
+                history.name_product = product['name']
+                history.price = product['price']
+                history.total_price = int(product['total'])
+                history.count = int(product['count'])
+                history.img_link = product['img_link']
+                history.section = product['section']
+                history.sub_section = product['sub_section']
+                history.link_to_product = product['link']
+                db.session.add(history)
+                db.session.commit()
+            except Exception as err:
+                db.session.rollback()
+                print(err)
+        
         admin_msg = msg_basket_for_admin(name, email, phone, total_sum, products)
         user_msg = msg_basket_for_user(name, total_sum, products)
+        print(admin_msg)
+        print(user_msg)
         send_mail(
             'Заказ в магазине!',
             [Config.MAIL_USERNAME],
