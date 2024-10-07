@@ -183,3 +183,24 @@ class HistoryProducts(db.Model):
     section: so.Mapped[str] = so.mapped_column(sa.String(300))
     sub_section: so.Mapped[str] = so.mapped_column(sa.String(300))
     link_to_product: so.Mapped[str] = so.mapped_column(sa.String(300))
+    sales_id: so.Mapped[int] = so.mapped_column(
+            sa.ForeignKey('history_sales.id', ondelete='CASCADE')
+    )
+    h_sales: so.Mapped['HistorySales'] = so.relationship(
+        'HistorySales',
+        back_populates='h_prod'
+    )
+
+
+
+class HistorySales(db.Model):
+    __tablename__ = 'history_sales'
+    id: so.Mapped[int] = so.mapped_column(
+        primary_key=True,
+        autoincrement=True
+    )
+    h_prod: so.Mapped[list['HistoryProducts']] = so.relationship(
+        'HistoryProducts',
+        back_populates='h_sales',
+        cascade='all, delete-orphan'
+    )
