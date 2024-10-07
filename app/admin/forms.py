@@ -17,7 +17,7 @@ from flask_wtf.file import FileAllowed, FileRequired
 class LoginForm(FlaskForm):
     name = StringField('Логин: ', validators=
                        [DataRequired(message='Поле не может быть пустым'),
-                        Length(min=1, max=10),
+                        Length(min=1, max=11),
                         Regexp(r'^[a-zA-Zа-яА-Я0-9_]+$', message="only aA1_")
                         ])
     

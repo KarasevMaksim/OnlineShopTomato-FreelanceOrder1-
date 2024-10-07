@@ -17,7 +17,9 @@ from config import Config
 
 @bp.route('/', methods=['GET', 'POST'])
 def index():
-    last_news = News.query.all()[-1]
+    last_news = News.query.all()
+    if last_news:
+        last_news = last_news[-1]
     title = 'Tomato'
     form = ShowProductsForm()
     form2 = SearchForm()
