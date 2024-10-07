@@ -163,3 +163,23 @@ class SellAndBy(db.Model):
        autoincrement=True 
     )
     sell_and_by: so.Mapped[str] = so.mapped_column(sa.Text)
+
+
+class HistoryProducts(db.Model):
+    __tablename__ = 'history_product'
+    id: so.Mapped[int] = so.mapped_column(
+        primary_key=True,
+        autoincrement=True
+    )
+    name_user: so.Mapped[str] = so.mapped_column(sa.String(300))
+    email_user: so.Mapped[str] = so.mapped_column(sa.String(300))
+    phone_user: so.Mapped[str] = so.mapped_column(sa.String(300))
+    
+    name_product: so.Mapped[str] = so.mapped_column(sa.String(300))
+    price: so.Mapped[int] = so.mapped_column(sa.Integer)
+    total_price: so.Mapped[int] = so.mapped_column(sa.Integer)
+    count: so.Mapped[int] = so.mapped_column(sa.Integer) 
+    img_link: so.Mapped[str] = so.mapped_column(sa.String(100))
+    section: so.Mapped[str] = so.mapped_column(sa.String(300))
+    sub_section: so.Mapped[str] = so.mapped_column(sa.String(300))
+    link_to_product: so.Mapped[str] = so.mapped_column(sa.String(300))
