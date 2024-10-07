@@ -10,9 +10,9 @@
   {% for product, count in products_and_count %}
     {% if product.is_active %}
       <div>
-        <div onclick="location.href='{{ url_for('main.index') }}{{ product.id }}'">
+        <a href="{{ url_for('main.index') }}{{ product.id }}" target="_blank" rel="noopener noreferrer">      
           <h2>{{ product.name }}</h2>
-        </div>
+        </a>
         <p>Цена: {{ product.price }} р.</p>
         <p class="price-element" style="display: none;">{{ product.price }}</p>
         <form action="{{ url_for('basket.update_product_in_basket') }}" method="post">
@@ -21,11 +21,11 @@
           <input type="submit" value="Изменить количество">
         </form>
         <p class="total-cost">Общая стоимость: <span class="total-cost-value">{{ product.price | int * count | int }} р.</span></p>
-        <div onclick="location.href='{{ url_for('main.index') }}{{ product.id }}'">
+        <a href="{{ url_for('main.index') }}{{ product.id }}" target="_blank" rel="noopener noreferrer">      
           <div>
             <img src="{{ url_for('static', filename=product.img_link) }}" alt="product_img">
           </div>
-        </div>
+        </a>
         <form method="post" action="{{ url_for('basket.delete_product') }}">
           <input type="hidden" name="get_id" value="{{ product.id }}">
           <button type="submit">Удалить</button>

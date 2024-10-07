@@ -45,7 +45,7 @@
   <div id="item-list">
     {% for product in products %}
       {% if product.is_active %}
-        <div onclick="location.href='{{ url_for('main.index') }}{{ product.id }}'">
+        <a href="{{ url_for('main.index') }}{{ product.id }}" target="_blank" rel="noopener noreferrer">
           <h2>{{ product.name }}</h2>
           <p>Цена: {{ product.price }} р.</p>
           {% if product.about %}
@@ -54,7 +54,7 @@
           <div>
             <img src="{{ url_for('static', filename=product.img_link) }}" alt="product_img">
           </div>
-        </div>
+        </a>
       {% endif %}
     {% endfor %}
   </div>
