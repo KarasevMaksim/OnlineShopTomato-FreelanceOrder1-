@@ -6,7 +6,7 @@ from flask import (
 )
 from app.models import Products, Sections, SubSections
 from app.basket import bp
-from app.email import send_mail, msg_basket_for_admin
+from app.email import send_mail, msg_basket_for_admin, msg_basket_for_user
 from app.basket.forms import PlaceAnOrder
 from config import Config
 
@@ -89,15 +89,29 @@ def by_basket():
            'total': int(count) * int(product.price),
            'section': product.section.name,
            'sub_section': product.sub_section.name,
-           'link': f'http://127.0.0.1:5000/{product.id}'
+           'link': f'http://127.0.0.1:5000/{product.id}',
+           'img_link': url_for('static', filename=product.img_link)
         }
         return product_dict
         
-    response = make_response()
+    response = make_response(render_template('basket/by.html'))
+    
     
     data_basket_json = request.cookies.get('data_basket')
-    if data_basket_json:
+    if  data_basket_json:
         data_basket = json.loads(data_basket_json)
+        if not form.validate_on_submit():
+            basket_items = list(data_basket.items())
+            products_and_count = [
+            (Products.query.get(int(i[0])), i[1]) for i in basket_items
+            ]
+            
+            return render_template(
+                    'basket/basket.html',
+                    form=form,
+                    products_and_count=products_and_count
+            )
+
         products = tuple(map(
             lambda items: query_products(items[0], items[1]),
             data_basket.items()
@@ -107,18 +121,25 @@ def by_basket():
         email = form.email.data
         phone = form.phone_number.data
         total_sum = sum(map(lambda x: x['total'], products))
-
-        print('\n', products, total_sum, '\n\n')
         
         admin_msg = msg_basket_for_admin(name, email, phone, total_sum, products)
-        
+        user_msg = msg_basket_for_user(name, total_sum, products)
         send_mail(
             'Заказ в магазине!',
             [Config.MAIL_USERNAME],
             html_body=admin_msg
         )
-        return render_template('basket/by.html')
+        send_mail(
+            'Tomato Shop',
+            [email],
+            html_body=user_msg
+        )
+        response.delete_cookie('data_basket')
+        return response
     
+    flash('Ваша корзина пустая!')
     return redirect(url_for('basket.index'))
+
+    
     
     
