@@ -1,0 +1,15 @@
+.image-container {
+    display: flex;
+    align-items: left;
+  }
+  
+  .image-container img {
+    width: 100px; 
+    height: 100px;
+  }
+  
+  .text-container {
+    text-align: left;
+    margin-left: 10px;
+  }
+  
