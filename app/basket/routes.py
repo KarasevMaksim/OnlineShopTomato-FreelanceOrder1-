@@ -147,9 +147,14 @@ def by_basket():
         except Exception as err:
             db.session.rollback()
             print(err)
+        finally:
+            order_id = HistorySales.query.order_by(
+                HistorySales.id.desc()
+            ).first()
+            order_id = order_id.id
         
-        admin_msg = msg_basket_for_admin(name, email, phone, total_sum, products)
-        user_msg = msg_basket_for_user(name, total_sum, products)
+        admin_msg = msg_basket_for_admin(order_id, name, email, phone, total_sum, products)
+        user_msg = msg_basket_for_user(order_id, name, total_sum, products)
         send_mail(
             'Заказ в магазине!',
             [Config.MAIL_USERNAME],

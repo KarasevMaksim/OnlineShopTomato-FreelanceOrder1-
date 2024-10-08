@@ -81,7 +81,7 @@ def msg_for_contacts(theme, name, email, phone, message):
         '''
 
 
-def msg_basket_for_user(name, total_sum, products):
+def msg_basket_for_user(order_id, name, total_sum, products):
     base_msg = f'''
     <!DOCTYPE html>
     <html>
@@ -108,6 +108,7 @@ def msg_basket_for_user(name, total_sum, products):
       <!-- Основное содержимое письма -->
       <p>
         <h2>Заказ в магазине Tomato Shop</h2>
+        <h3>Номер заказа: {order_id}</h3>
         Здравствуйте {name}<br>
         Спасибо за заказ. Он будет зарезервирован,
         пока мы не подтвердим, что платёж получен.
@@ -129,7 +130,7 @@ def msg_basket_for_user(name, total_sum, products):
     return base_msg + dop_msg + lust_msg
         
         
-def msg_basket_for_admin(name, email, phone, total_sum, products): 
+def msg_basket_for_admin(order_id, name, email, phone, total_sum, products): 
     base_msg = f'''
     <!DOCTYPE html>
     <html>
@@ -156,6 +157,7 @@ def msg_basket_for_admin(name, email, phone, total_sum, products):
       <!-- Основное содержимое письма -->
       <p>
         <h2>Заказ в магазине!</h2>
+        <h3>Номер заказа: {order_id}</h3>
         Имя отправителя: {name}<br>
         Email отпровителя: {email}<br>
         Номер телефона отправителя: {phone}<br>
