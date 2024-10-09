@@ -85,6 +85,7 @@ def by_basket():
         product = Products.query.filter(Products.id == p_id).first()
         product_dict = {
            'name': product.name,
+           'about': product.about,
            'price': product.price,
            'count': count,
            'total': int(count) * int(product.price),
@@ -130,6 +131,10 @@ def by_basket():
             for product in products:
                 history = HistoryProducts()
                 history.name_user = name
+                if product['about']:
+                    history.about_product = product['about']
+                else:
+                    history.about_product = 'Нет описания'
                 history.email_user = email
                 history.phone_user = str(phone)
                 history.name_product = product['name']
