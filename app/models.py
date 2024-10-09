@@ -176,6 +176,7 @@ class HistoryProducts(db.Model):
     phone_user: so.Mapped[str] = so.mapped_column(sa.String(300))
     
     name_product: so.Mapped[str] = so.mapped_column(sa.String(300))
+    about_product: so.Mapped[str] = so.mapped_column(sa.Text)
     price: so.Mapped[int] = so.mapped_column(sa.Integer)
     total_price: so.Mapped[int] = so.mapped_column(sa.Integer)
     count: so.Mapped[int] = so.mapped_column(sa.Integer) 
