@@ -1,0 +1,28 @@
+{% extends "admin/base.html" %}
+
+
+{% block content %}
+  {% for message in get_flashed_messages() %}
+    <div class="alert alert-danger" style="color: red;" role="alert">
+      {{ message }}
+    </div>
+  {% endfor %}
+  <form action="" method="post">
+    <label for="name">Ввидите номер заказа:</label>
+    <input type="text" name="get_id"><br>
+    <input type="submit" value="Отправить">
+  </form>
+  {% if history_sales %}
+    {% for order in history_sales.h_prod %}
+    <div class="image-container">
+      <img src="{{ order.img_link }}" alt="Изображение 1">
+      <div class="text-container">
+        <p>{{ order.name_product }}</p>
+        <p>{{ order.about_product }}</p>
+      </div>
+    </div>
+      <hr>
+    {% endfor %}
+  {% endif %}
+  
+{% endblock %}

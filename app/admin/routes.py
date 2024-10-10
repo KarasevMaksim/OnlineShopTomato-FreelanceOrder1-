@@ -13,7 +13,8 @@ from flask_login import (
 )
 from app import db, login
 from app.models import (
-    Sections, SubSections, Users, Products, News, Contacts, About, SellAndBy
+    Sections, SubSections, Users, Products, News, Contacts, About, SellAndBy,
+    HistorySales
 )
 from app.admin.funcs import (
     save_product_img, resized_image, delete_paths_to_img, delete_product_img
@@ -435,7 +436,10 @@ def add_news():
 
 
 @bp.route('delete-news', methods=['POST'])
+@login_required
 def delete_news():
+    if not current_user.is_admin:
+        return abort(403)
     news_id = request.form.get('get-id')
     confirm = request.form.get('confirm')
     
@@ -458,7 +462,10 @@ def delete_news():
     
     
 @bp.route('/update-contacts', methods=['GET', 'POST'])
+@login_required
 def update_contacts():
+    if not current_user.is_admin:
+        return abort(403)
     form = ContactsForm()
     contact = Contacts.query.first()
 
@@ -488,7 +495,10 @@ def update_contacts():
     
 
 @bp.route('/update-about', methods=['GET', 'POST'])
+@login_required
 def update_about():
+    if not current_user.is_admin:
+        return abort(403)
     form = AboutForm()
     about = About.query.first()
 
@@ -516,7 +526,10 @@ def update_about():
    
    
 @bp.route('/update-sell-and-by', methods=['GET', 'POST'])
+@login_required
 def update_sell_and_by():
+    if not current_user.is_admin:
+        return abort(403)
     form = SellAndByForm()
     sell_and_by = SellAndBy.query.first()
 
@@ -541,4 +554,43 @@ def update_sell_and_by():
         sell_and_by=sell_and_by,
         form=form
     )
+    
+
+
+@bp.route('export-order', methods=['GET', 'POST'])
+@login_required
+def export_order():
+    if not current_user.is_admin:
+        return abort(403)
+
+    history_sales = None
+    if request.method == 'POST':
+        search = request.form.get('get_id')
+        if search:
+            try:
+                search = int(search)
+                history_sales = HistorySales.query.filter(
+                    HistorySales.id == search
+                ).first()
+                
+            except Exception as err:
+                db.session.rollback()
+                print(err)
+                flash('Не корректный запрос!')
+                return redirect(url_for('admin.export_order'))
+        else:
+            flash('Не корректный запрос!')
+            return redirect(url_for('admin.export_order'))
+    
+    return render_template(
+        'admin/export_order.html',
+        history_sales=history_sales  
+    )
+
+    
+@bp.route('full-orders')
+@login_required
+def full_orders():
+    if not current_user.is_admin:
+        return abort(403)
     

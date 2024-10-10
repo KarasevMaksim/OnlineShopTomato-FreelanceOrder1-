@@ -27,6 +27,9 @@
 <div>
   <a href="{{ url_for('admin.update_sell_and_by') }}">Доставка и оплата</a>
 <div>
+<div>
+  <a href="{{ url_for('admin.export_order') }}">Экспорт заказов</a>
+<div>
   <h2> Добавить новый товар </h2>  
   <form action="" method="post" enctype="multipart/form-data">
     {{ form.hidden_tag() }}
