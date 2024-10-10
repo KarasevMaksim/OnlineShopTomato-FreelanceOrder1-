@@ -12,6 +12,7 @@
         {% if loop.index == 1 %}
         <p>Имя покупателя: {{ order.name_user }}</p>
         <p>Телефон покупателя: {{ order.phone_user }}</p>
+        <p>Почта покупателя: {{ order.email_user }}</p>
         <br>
         {% endif %}
         <p>Название продукта: {{ order.name_product }}</p>
@@ -37,6 +38,7 @@
         <p>Номер заказа: {{ history_order.id }}</p>
         <p>Имя покупателя: {{ order.name_user }}</p>
         <p>Телефон покупателя: {{ order.phone_user }}</p>
+        <p>Почта покупателя: {{ order.email_user }}</p>
         <a href="{{ url_for('admin.full_orders', order_id=history_order.id) }}">Открыть заказ</a>
         <hr> 
       {% endif %}
