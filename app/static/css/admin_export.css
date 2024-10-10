@@ -4,12 +4,18 @@
   }
   
   .image-container img {
-    width: 100px; 
-    height: 100px;
+    width: 75px; 
+    height: 75px;
+  }
+
+  .image-container p {
+    margin: 0;
   }
   
   .text-container {
     text-align: left;
     margin-left: 10px;
   }
-  
+  hr {
+    margin: 0;
+  }
