@@ -20,7 +20,7 @@ def index():
     last_news = News.query.all()
     if last_news:
         last_news = last_news[-1]
-    title = 'Tomato'
+    title = 'Tomato Shop'
     form = ShowProductsForm()
     form2 = SearchForm()
     sections_item = Sections.query.all()
@@ -159,7 +159,8 @@ def search():
             flash('Не чего не найдено!')
     return render_template('search.html',
                            form=form,
-                           products=products
+                           products=products,
+                           title='Поиск'
     )
 
     
@@ -171,7 +172,8 @@ def contacts():
     return render_template(
         'contacts.html',
         contacts=contacts,
-        form=form
+        form=form,
+        title='Контакты'
     )
     
 
@@ -200,7 +202,11 @@ def contacts_send_mail():
             return redirect(url_for('main.contacts'))
     
 
-    return render_template('contacts.html', form=form, contacts=Contacts.query.first())
+    return render_template('contacts.html',
+                           form=form,
+                           title='Контакты',
+                           contacts=Contacts.query.first()
+            )
 
     
 @bp.route('/more-info')
@@ -208,7 +214,8 @@ def more_info():
     about = About.query.first()
     return render_template(
         'more_info.html',
-        about=about
+        about=about,
+        title="О магазине"
     )
     
 
@@ -217,5 +224,6 @@ def sell_and_by():
     sell_and_by = SellAndBy.query.first()
     return render_template(
         'sell_and_by.html',
-        sell_and_by=sell_and_by
+        sell_and_by=sell_and_by,
+        title='Доставка и оплата'
     )
