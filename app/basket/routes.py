@@ -27,7 +27,8 @@ def index():
     return render_template(
         'basket/basket.html',
         products_and_count=products_and_count,
-        form=form
+        form=form,
+        title='Корзина'
     )
     
     

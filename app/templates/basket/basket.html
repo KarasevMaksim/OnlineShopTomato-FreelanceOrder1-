@@ -1,6 +1,9 @@
 {% extends "base.html" %}
 
 
+{% block title %}
+  {{ title }}
+{% endblock %}
 {% block content %}
   {% for message in get_flashed_messages() %}
   <div class="alert alert-danger" style="color: red;" role="alert">
