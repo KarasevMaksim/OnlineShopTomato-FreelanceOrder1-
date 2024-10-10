@@ -19,7 +19,8 @@ def index(id):
             'slug/product_card.html',
             product=product,
             data_basket=data_basket,
-            p_id=str(id)
+            p_id=str(id),
+            title='Product'
         )
     abort(404)
 
