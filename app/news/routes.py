@@ -10,6 +10,7 @@ def index():
     news = News.query.all()[::-1]
     return render_template(
         'news/news.html',
-        news=news
+        news=news,
+        title='Новости магазина'
     )
     
