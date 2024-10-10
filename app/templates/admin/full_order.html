@@ -1,0 +1,47 @@
+{% extends 'admin/base.html' %}
+
+
+{% block content %}
+  {% if not query_full_item %}
+  <a href="{{ url_for('admin.admin') }}">На главную</a><br>
+  <a href="{{ url_for('admin.full_orders') }}">Вернуться назад</a>
+  {% for history_order in history_orders %}
+    {% set count = history_order.h_prod | sum(attribute='total_price') %}
+    <p>Номер заказа: {{ history_order.id }}</p>
+    {% for order in history_order.h_prod %}
+        {% if loop.index == 1 %}
+        <p>Имя покупателя: {{ order.name_user }}</p>
+        <p>Телефон покупателя: {{ order.phone_user }}</p>
+        <br>
+        {% endif %}
+        <p>Название продукта: {{ order.name_product }}</p>
+        <p>Описание продукта: {{ order.about_product }}</p>
+        <p>Цена за единицу: {{ order.price }}</p>
+        <p>Количество товара: {{ order.count }}</p>
+        <p>Общая цена: {{ order.total_price }}</p>
+        <p>Категория: {{ order.section }}</p>
+        <p>Под категория: {{ order.sub_section }}</p>
+        <p>Ссылка на продукт: <a href="{{ order.link_to_product }}">{{ order.name_product }}</a></p>
+        <div class="image-container">
+            <img src="{{ order.img_link }}" alt="Изображение 1">
+        </div>
+        <hr>
+    {% endfor %}
+    <p>Итого: {{ count }}</p>
+  {% endfor %}
+  {% else %}
+    <a href="{{ url_for('admin.admin') }}">На главную</a><br>
+    {% for history_order in history_orders %}
+    {% for order in history_order.h_prod %}
+      {% if loop.index == 1 %}
+        <p>Номер заказа: {{ history_order.id }}</p>
+        <p>Имя покупателя: {{ order.name_user }}</p>
+        <p>Телефон покупателя: {{ order.phone_user }}</p>
+        <a href="{{ url_for('admin.full_orders', order_id=history_order.id) }}">Открыть заказ</a>
+        <hr> 
+      {% endif %}
+    {% endfor %}
+  {% endfor %}
+  {% endif %}
+{% endblock %}
+

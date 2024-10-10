@@ -587,10 +587,30 @@ def export_order():
         history_sales=history_sales  
     )
 
-    
-@bp.route('full-orders')
+
+@bp.route('/full-orders/', defaults={'order_id': None})
+@bp.route('/full-orders/<int:order_id>')
 @login_required
-def full_orders():
+def full_orders(order_id):
     if not current_user.is_admin:
         return abort(403)
     
+    query_full_item = False
+    
+    if not order_id:
+        query_full_item = True
+        history_orders = HistorySales.query.order_by(
+            HistorySales.id.desc()).all()
+    else:
+        history_orders = HistorySales.query.filter(
+            HistorySales.id == order_id
+        ).first()
+        history_orders = [history_orders]
+        if not history_orders:
+            return redirect(url_for('admin.full_orders'))
+
+    return render_template(
+        'admin/full_order.html',
+        history_orders=history_orders,
+        query_full_item=query_full_item
+    )
