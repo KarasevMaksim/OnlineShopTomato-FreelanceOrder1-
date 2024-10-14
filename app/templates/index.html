@@ -22,44 +22,46 @@
 {% endblock %}
 {% block content %}
   <div>
-    <form action="/search" method="post">
-      {{ form2.hidden_tag() }}
-      <p>
-        {{ form2.input_search.label }}
-        {{ form2.input_search }}
-        {{ form2.submit }}
-        {% for error in form2.input_search.errors %}
-          <div class="alert alert-danger" role="alert">
-            {{ error }}
-          </div>
-        {% endfor %}
-      </p>
-    </form>
-  </div>
-  <div>
     <h2>Последняя новость</h2>
     <p>
       <h3>{{ last_news.name }}</h3>
       {{ last_news.post }}
     </p>
   </div>
-  <div>
-    <h2>Выбрать товар из категории</h2>
-    <form action="/update-puduct" method="post">
-      {{ form.hidden_tag() }}
-      <p>
-        {{ form.select_section2.label }}
-        {{ form.select_section2 }}
-      </p>
-      <p>
-        {{ form.select_sub_section2.label }}
-        {{ form.select_sub_section2 }}
-      </p>
-      <p>
-        {{ form.submit1 }}
-        {{ form.submit2 }}
-      </p>
-    </form>
+  <div class="container">
+    <div class="row justify-content-between">
+      <div class="col-xl-4">
+        <h3>Выбрать товар из категории</h3>
+        <form action="/update-puduct" method="post">
+          {{ form.hidden_tag() }}
+          <p>
+            {{ form.select_section2.label }}
+            {{ form.select_section2(class_="form-select form-select-lg", aria_label="Выбор категории товара") }}
+          </p>
+          <p>
+            {{ form.select_sub_section2.label }}
+            {{ form.select_sub_section2(class_="form-select form-select-sm", aria_label="Выбор категории товара") }}
+          </p>
+          <div class="d-grid gap-2 col-12 d-md-block">
+            {{ form.submit1(class_="btn btn-primary") }}
+            {{ form.submit2(class_="btn btn-primary") }}
+          </div>
+        </form>
+      </div>
+      <div class="col-xl-4">
+        <form action="/search" method="post">
+          {{ form2.hidden_tag() }}
+          <h3>{{ form2.input_search.label(class_="mb-2") }}</h3>
+          {{ form2.input_search(class_="form-control mb-2 mt-4") }}
+          {{ form2.submit(class_="btn btn-primary") }}
+          {% for error in form2.input_search.errors %}
+            <div class="alert alert-danger" role="alert">
+              {{ error }}
+            </div>
+          {% endfor %}
+        </form>
+      </div>
+    </div>
   </div>
   <div class="container mt-5">
     <div class="row justify-content-center" id="item-list">
