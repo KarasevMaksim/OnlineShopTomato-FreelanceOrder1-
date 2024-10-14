@@ -27,17 +27,28 @@
     </style>
   </head>
   <body>
-    <div class="d-flex-wrapper">
-      <header class="bg-light py-3">
-        <nav class="container d-flex justify-content-between">
-          <a href="{{ url_for('main.index') }}">Главная</a>
-          <a href="{{ url_for('main.contacts') }}">Контакты</a>
-          <a href="{{ url_for('main.more_info') }}">О магазине</a>
-          <a href="{{ url_for('news.index') }}">Новости</a>
-          <a href="{{ url_for('main.sell_and_by') }}">Доставка и оплата</a>
-          <a href="{{ url_for('basket.index') }}">Корзина</a>
-        </nav>
-        <h1 class="text-center">Welcome to My Website</h1>
+    <div class="container">
+    <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+      <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+        <svg class="bi me-2" width="40" height="32">
+          <image href="{{ url_for('static', filename='img/work_img/logo.png') }}" width="45" height="35"/>
+        </svg>
+        
+        <span class="fs-4">Tomato Online Shop</span>
+      </a>
+
+      <ul class="nav nav-pills">
+        <li class="nav-item"><a href="{{ url_for('main.index') }}" class="nav-link active" aria-current="page">Главная</a></li>
+        <li class="nav-item"><a href="{{ url_for('main.contacts') }}" class="nav-link">Контакты</a></li>
+        <li class="nav-item"><a href="{{ url_for('main.more_info') }}" class="nav-link">О магазине</a></li>
+        <li class="nav-item"><a href="{{ url_for('news.index') }}" class="nav-link">Новости</a></li>
+        <li class="nav-item"><a href="{{ url_for('main.sell_and_by') }}" class="nav-link">Доставка и оплата</a></li>
+        <li class="nav-item"><a href="{{ url_for('basket.index') }}" class="nav-link">Корзина</a></li>
+      </ul>
+    </header>
+  </div>
+  <div class="b-example-divider"></div>
+    
         {% block header %}
         {% endblock %}
       </header>
