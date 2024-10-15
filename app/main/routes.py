@@ -149,6 +149,7 @@ def load_more():
 
 @bp.route('/search', methods=['POST', 'GET'])
 def search():
+    products = None
     form = SearchForm()
     if form.validate_on_submit():
         search_name = form.input_search.data
