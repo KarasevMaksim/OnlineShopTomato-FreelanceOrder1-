@@ -19,19 +19,23 @@
         <p>Описание: {{ product.about }}</p>
       {% endif %}
       <div>
-        <img src="{{ url_for('static', filename=product.img_link) }}" alt="product_img">
+        <img src="{{ url_for('static', filename=product.img_link) }}" class="img-fluid" style="max-width: 600px; width: 100%; height: auto;" alt="product_img">
       </div>
     </div>
   </div>
   <div>
     <form action="{{ url_for('slug.add_to_basket') }}" method="post">
-      {% if data_basket and p_id in data_basket %}
-        <input type="number" step="1" min="1" max="100" value="{{data_basket[p_id]}}" id="quantity" name="cost"/>
-      {% else %}
-        <input type="number" step="1" min="1" max="100" value="1" id="quantity" name="cost"/>
-      {% endif %}
-      <input type="hidden" name="get_id" value="{{ product.id }}">
-      <input type="submit" value="Добавить в корзину">
+      <div class="row">
+        <div class=" col-sm-2">
+          {% if data_basket and p_id in data_basket %}
+            <input class="form-control mb-3 mt-3" type="number" step="1" min="1" max="100" value="{{data_basket[p_id]}}" id="quantity" name="cost"/>
+          {% else %}
+            <input class="form-control mb-3 mt-3" type="number" step="1" min="1" max="100" value="1" id="quantity" name="cost"/>
+          {% endif %}
+          <input type="hidden" name="get_id" value="{{ product.id }}">
+          <input class="btn btn-primary mb-2" type="submit" value="Добавить в корзину">
+        </div>
+      </div>
     </form>
     {% if data_basket and p_id in data_basket %}
       <p id="total-cost">Общая стоимость: <span id="total-cost-value">{{ product.price | int * data_basket[p_id] | int }} р.</span></p>
