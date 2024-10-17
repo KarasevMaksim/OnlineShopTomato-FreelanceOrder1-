@@ -76,7 +76,8 @@ def index():
         form=form,
         form2=form2,
         products=products,
-        last_news=last_news
+        last_news=last_news,
+        active_page='main.index'
     )
 
 
@@ -144,7 +145,11 @@ def load_more():
         products = Products.query.all()[::-1]
         products = products[offset:offset+9]
     
-    return render_template("item_list.html", products=products, offset=offset)
+    return render_template(
+        "item_list.html",
+        products=products,
+        offset=offset
+    )
 
 
 @bp.route('/search', methods=['POST', 'GET'])
@@ -174,7 +179,8 @@ def contacts():
         'contacts.html',
         contacts=contacts,
         form=form,
-        title='Контакты'
+        title='Контакты',
+        active_page='main.contacts'
     )
     
 
@@ -206,7 +212,8 @@ def contacts_send_mail():
     return render_template('contacts.html',
                            form=form,
                            title='Контакты',
-                           contacts=Contacts.query.first()
+                           contacts=Contacts.query.first(),
+                           active_page='main.contacts'
             )
 
     
@@ -216,7 +223,8 @@ def more_info():
     return render_template(
         'more_info.html',
         about=about,
-        title="О магазине"
+        title="О магазине",
+        active_page='main.more_info'
     )
     
 
@@ -226,5 +234,6 @@ def sell_and_by():
     return render_template(
         'sell_and_by.html',
         sell_and_by=sell_and_by,
-        title='Доставка и оплата'
+        title='Доставка и оплата',
+        active_page='main.sell_and_by'
     )

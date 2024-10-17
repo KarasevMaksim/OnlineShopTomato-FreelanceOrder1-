@@ -28,7 +28,8 @@ def index():
         'basket/basket.html',
         products_and_count=products_and_count,
         form=form,
-        title='Корзина'
+        title='Корзина',
+        active_page='basket.index'
     )
     
     
@@ -176,7 +177,3 @@ def by_basket():
     
     flash('Ваша корзина пустая!')
     return redirect(url_for('basket.index'))
-
-    
-    
-    

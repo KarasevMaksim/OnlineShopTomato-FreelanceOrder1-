@@ -38,13 +38,25 @@
       </a>
 
       <ul class="nav nav-pills">
-        <li class="nav-item"><a href="{{ url_for('main.index') }}" class="nav-link active" aria-current="page">Главная</a></li>
-        <li class="nav-item"><a href="{{ url_for('main.contacts') }}" class="nav-link">Контакты</a></li>
-        <li class="nav-item"><a href="{{ url_for('main.more_info') }}" class="nav-link">О магазине</a></li>
-        <li class="nav-item"><a href="{{ url_for('news.index') }}" class="nav-link">Новости</a></li>
-        <li class="nav-item"><a href="{{ url_for('main.sell_and_by') }}" class="nav-link">Доставка и оплата</a></li>
-        <li class="nav-item"><a href="{{ url_for('basket.index') }}" class="nav-link">Корзина</a></li>
-      </ul>
+        <li class="nav-item">
+            <a href="{{ url_for('main.index') }}" class="nav-link {{ 'active' if active_page == 'main.index' else '' }}" aria-current="page">Главная</a>
+        </li>
+        <li class="nav-item">
+            <a href="{{ url_for('main.contacts') }}" class="nav-link {{ 'active' if active_page == 'main.contacts' else '' }}">Контакты</a>
+        </li>
+        <li class="nav-item">
+            <a href="{{ url_for('main.more_info') }}" class="nav-link {{ 'active' if active_page == 'main.more_info' else '' }}">О магазине</a>
+        </li>
+        <li class="nav-item">
+            <a href="{{ url_for('news.index') }}" class="nav-link {{ 'active' if active_page == 'news.index' else '' }}">Новости</a>
+        </li>
+        <li class="nav-item">
+            <a href="{{ url_for('main.sell_and_by') }}" class="nav-link {{ 'active' if active_page == 'main.sell_and_by' else '' }}">Доставка и оплата</a>
+        </li>
+        <li class="nav-item">
+            <a href="{{ url_for('basket.index') }}" class="nav-link {{ 'active' if active_page == 'basket.index' else '' }}">Корзина</a>
+        </li>
+    </ul>    
     </header>
   </div>
   <div class="b-example-divider"></div>

@@ -11,6 +11,7 @@ def index():
     return render_template(
         'news/news.html',
         news=news,
-        title='Новости магазина'
+        title='Новости магазина',
+        active_page='news.index'
     )
     
