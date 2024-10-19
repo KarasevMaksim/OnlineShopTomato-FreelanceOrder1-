@@ -52,7 +52,7 @@
           <p class="h2" id="total-cost-all-products">Итого: <span id="total-cost-all-products-value">0 р.</span></p>
         </div>
         <h2>Оформить Заказ!</h2>
-        <form method="post" action="{{ url_for('basket.by_basket') }}">
+        <form method="post" action="{{ url_for('basket.by_basket') }}" id="myForm" onsubmit="handleSubmit(event)">
           {{ form.hidden_tag() }}
           <div class="mb-3">
             {{ form.name.label(class_="form-label") }}<br>
@@ -84,8 +84,12 @@
           <div>
             <a href="{{ url_for('main.sell_and_by') }}">Перед заказом ознакомьтесь с условиями "Оплаты и Доставки!</a>
             <div class="mb-3">
-              {{ form.submit(class_="btn btn-primary mt-2") }}
+              {{ form.submit(class_="btn btn-primary mt-2", id="submitButton") }}
             </div>
+            <button class="btn btn-primary" type="button" id="loadingButton" disabled style="display: none;">
+              <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+              Загрузка...
+            </button>
           </div>
         </form>
       </div>
