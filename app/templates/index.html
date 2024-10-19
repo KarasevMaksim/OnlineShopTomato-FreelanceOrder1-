@@ -5,20 +5,7 @@
   {{ title }}
 {% endblock %}
 {% block styles %}
-<style>
-  .card-body {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    height: 100%;
-  }
-  .card-img-top {
-    align-self: center;
-    width: 100%;
-    height: 400px;
-    object-fit: cover;
-  }
-</style>
+  <link rel="stylesheet" href="{{ url_for('static', filename="css/card.css") }}">
 {% endblock %}
 {% block content %}
   <div class="container">
