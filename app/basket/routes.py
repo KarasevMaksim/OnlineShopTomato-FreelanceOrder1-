@@ -100,7 +100,6 @@ def by_basket():
         }
         return product_dict
         
-    response = make_response(render_template('basket/by.html'))
     
     
     data_basket_json = request.cookies.get('data_basket')
@@ -159,6 +158,12 @@ def by_basket():
                 HistorySales.id.desc()
             ).first()
             order_id = order_id.id
+        
+        response = make_response(render_template(
+            'basket/by.html',
+            order_id=order_id
+            )
+        )
         
         admin_msg = msg_basket_for_admin(order_id, name, email, phone, total_sum, products)
         user_msg = msg_basket_for_user(order_id, name, total_sum, products)
