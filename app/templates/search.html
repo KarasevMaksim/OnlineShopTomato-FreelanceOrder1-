@@ -30,24 +30,26 @@
 </div>
 <div class="container mt-5">
   <div class="row justify-content-center" id="item-list">
-    {% for product in products %}
-      <div class="col-xl-4 col-md-6 col-sm-12 d-flex">
-        <div class="card mb-5 w-100">
-          <div class="card-body d-flex flex-column justify-content-between">
-            {% if product.is_active %}
-              <a href="{{ url_for('main.index') }}{{ product.id }}" class="text-decoration-none text-dark" rel="noopener noreferrer">
-                <h5 class="card-title">{{ product.name }}</h5>
-                <p class="card-text">Цена: {{ product.price }} р.</p>
-                {% if product.about %}
-                  <p class="card-text">Описание: {{ product.about }}</p>
-                {% endif %}
-                <img src="{{ url_for('static', filename=product.img_link) }}" class="card-img-top" alt="product_img">
-              </a>
-            {% endif %}
+    {% if products %}
+      {% for product in products %}
+        <div class="col-xl-4 col-md-6 col-sm-12 d-flex">
+          <div class="card mb-5 w-100">
+            <div class="card-body d-flex flex-column justify-content-between">
+              {% if product.is_active %}
+                <a href="{{ url_for('main.index') }}{{ product.id }}" class="text-decoration-none text-dark" rel="noopener noreferrer">
+                  <h5 class="card-title">{{ product.name }}</h5>
+                  <p class="card-text">Цена: {{ product.price }} р.</p>
+                  {% if product.about %}
+                    <p class="card-text">Описание: {{ product.about }}</p>
+                  {% endif %}
+                  <img src="{{ url_for('static', filename=product.img_link) }}" class="card-img-top" alt="product_img">
+                </a>
+              {% endif %}
+            </div>
           </div>
         </div>
-      </div>
-    {% endfor %}
+      {% endfor %}
+      {% endif %}
   </div>
 </div>
 {% endblock %}
