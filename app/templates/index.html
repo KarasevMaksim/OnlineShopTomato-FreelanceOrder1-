@@ -4,66 +4,82 @@
 {% block title %}
   {{ title }}
 {% endblock %}
+{% block styles %}
+  <link rel="stylesheet" href="{{ url_for('static', filename="css/card.css") }}">
+{% endblock %}
 {% block content %}
-  <div>
-    <form action="/search" method="post">
-      {{ form2.hidden_tag() }}
+  <div class="container">
+    <div class="mb-5">
+      <h3>Последняя новость:</h3>
       <p>
-        {{ form2.input_search.label }}
-        {{ form2.input_search }}
-        {{ form2.submit }}
-        {% for error in form2.input_search.errors %}
-          <div class="alert alert-danger" role="alert">
-            {{ error }}
+        <h4>{{ last_news.name }}</h4>
+        {{ last_news.post }}
+      </p>
+    </div>
+    <div>
+      <hr>
+    </div>
+    <div class="row justify-content-between">
+      <div class="col-xl-4">
+        <h3>Выбрать товар из категории</h3>
+        <form action="/update-puduct" method="post">
+          {{ form.hidden_tag() }}
+          <p>
+            {{ form.select_section2.label }}
+            {{ form.select_section2(class_="form-select form-select-lg", aria_label="Выбор категории товара") }}
+          </p>
+          <p>
+            {{ form.select_sub_section2.label }}
+            {{ form.select_sub_section2(class_="form-select form-select-sm", aria_label="Выбор категории товара") }}
+          </p>
+          <div class="d-grid gap-2 col-12 d-md-block">
+            {{ form.submit1(class_="btn btn-primary") }}
+            {{ form.submit2(class_="btn btn-primary") }}
           </div>
-        {% endfor %}
-      </p>
-    </form>
+        </form>
+      </div>
+      <div class="col-xl-4">
+        <form action="/search" method="post">
+          {{ form2.hidden_tag() }}
+          <h3>{{ form2.input_search.label(class_="mb-2") }}</h3>
+          {{ form2.input_search(class_="form-control mb-2 mt-4") }}
+          {{ form2.submit(class_="btn btn-primary") }}
+          {% for error in form2.input_search.errors %}
+            <div class="alert alert-danger" role="alert">
+              {{ error }}
+            </div>
+          {% endfor %}
+        </form>
+      </div>
+    </div>
   </div>
-  <div>
-    <h2>Последняя новость</h2>
-    <p>
-      <h3>{{ last_news.name }}</h3>
-      {{ last_news.post }}
-    </p>
-  </div>
-  <div>
-    <h2>Выбрать товар из категории</h2>
-    <form action="/update-puduct" method="post">
-      {{ form.hidden_tag() }}
-      <p>
-        {{ form.select_section2.label }}
-        {{ form.select_section2 }}
-      </p>
-      <p>
-        {{ form.select_sub_section2.label }}
-        {{ form.select_sub_section2 }}
-      </p>
-      <p>
-        {{ form.submit1 }}
-        {{ form.submit2 }}
-      </p>
-    </form>
-  </div>
-  <div id="item-list">
-    {% for product in products %}
-      {% if product.is_active %}
-        <a href="{{ url_for('main.index') }}{{ product.id }}" target="_blank" rel="noopener noreferrer">
-          <h2>{{ product.name }}</h2>
-          <p>Цена: {{ product.price }} р.</p>
-          {% if product.about %}
-            <p>Описание: {{ product.about }}</p>
-          {% endif %}
-          <div>
-            <img src="{{ url_for('static', filename=product.img_link) }}" alt="product_img">
+  <div class="container mt-5">
+    <div class="row justify-content-center" id="item-list">
+      {% for product in products %}
+        <div class="col-xl-4 col-md-6 col-sm-12 d-flex">
+          <div class="card mb-5 w-100">
+            <div class="card-body d-flex flex-column justify-content-between">
+              {% if product.is_active %}
+                <a href="{{ url_for('main.index') }}{{ product.id }}" class="text-decoration-none text-dark" rel="noopener noreferrer">
+                  <h5 class="card-title">{{ product.name }}</h5>
+                  <p class="card-text">Цена: {{ product.price }} р.</p>
+                  {% if product.about %}
+                    <p class="card-text">Описание: {{ product.about }}</p>
+                  {% endif %}
+                  <img src="{{ url_for('static', filename=product.img_link) }}" class="card-img-top" alt="product_img">
+                </a>
+              {% endif %}
+            </div>
           </div>
-        </a>
-      {% endif %}
-    {% endfor %}
+        </div>
+      {% endfor %}
+    </div>
+    <div class="row justify-content-center">
+      <div class="col-xl-1 col-md-2 col-sm-3">
+        <button class="btn btn-primary" id="load-more-btn">Показать еще</button>
+      </div>
+    </div>
   </div>
-
-  <button id="load-more-btn">Показать еще</button>
-
 {% endblock %}
 
 

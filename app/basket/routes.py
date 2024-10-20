@@ -1,10 +1,10 @@
 import json
 
 from flask import (
-    render_template, url_for, request, jsonify, make_response, redirect, abort,
+    render_template, url_for, request, make_response, redirect, abort,
     flash
 )
-from app.models import Products, Sections, HistorySales, HistoryProducts
+from app.models import Products, HistorySales, HistoryProducts
 from app import db
 from app.basket import bp
 from app.email import send_mail, msg_basket_for_admin, msg_basket_for_user
@@ -28,7 +28,8 @@ def index():
         'basket/basket.html',
         products_and_count=products_and_count,
         form=form,
-        title='Корзина'
+        title='Корзина',
+        active_page='basket.index'
     )
     
     
@@ -99,7 +100,6 @@ def by_basket():
         }
         return product_dict
         
-    response = make_response(render_template('basket/by.html'))
     
     
     data_basket_json = request.cookies.get('data_basket')
@@ -159,6 +159,12 @@ def by_basket():
             ).first()
             order_id = order_id.id
         
+        response = make_response(render_template(
+            'basket/by.html',
+            order_id=order_id
+            )
+        )
+        
         admin_msg = msg_basket_for_admin(order_id, name, email, phone, total_sum, products)
         user_msg = msg_basket_for_user(order_id, name, total_sum, products)
         send_mail(
@@ -176,7 +182,3 @@ def by_basket():
     
     flash('Ваша корзина пустая!')
     return redirect(url_for('basket.index'))
-
-    
-    
-    

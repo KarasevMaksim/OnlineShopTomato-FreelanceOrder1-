@@ -27,3 +27,5 @@ function updateTotalCostAllProducts() {
 }
 
 updateTotalCostAllProducts();
+
+

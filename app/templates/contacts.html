@@ -5,72 +5,82 @@
   {{ title }}
 {% endblock %}
 {% block content %}
-  <h2>Наши контакты</h2>
-  <div>
-    <p>
-      {{ contacts.phone }}
-    </p>
-    <p>
-      {{ contacts.email }}
-    </p>
+  <div class="container">
+    <div class="row">
+      <div class="col-xl-6 col-md-6">
+        <h2>Наши контакты</h2>
+        <p>
+          {{ contacts.phone }}
+        </p>
+        <p>
+          {{ contacts.email }}
+        </p>
+      </div>
+      <div class="col-xl-6 col-md-6">
+        <h2>Форма для обратной связи</h2>
+        <div = class="col-xl-6">
+        <form action="{{ url_for('main.contacts_send_mail') }}" method="post" id="myForm" onsubmit="handleSubmit(event)">
+          {{ form.hidden_tag() }}
+          <div class="mb-3">
+            {{ form.name.label(class_="form-label") }}<br>
+            {{ form.name(class="form-control") }}
+            {% for error in form.name.errors %}
+              <div class="alert alert-danger" role="alert", style="color:red">
+                {{ error }}
+              </div>
+            {% endfor %}
+          </div>
+          <div class="mb-3">
+            {{ form.email.label(for="exampleInputEmail1", class_="form-label") }}<br>
+            {{ form.email(class_="form-control", id="exampleInputEmail1") }}
+            {% for error in form.email.errors %}
+              <div class="alert alert-danger" role="alert", style="color:red">
+                {{ error }}
+              </div>
+            {% endfor %}
+          </div>
+          <div class="mb-3">
+            {{ form.phone_number.label(class_="form-label") }}<br>
+            {{ form.phone_number(class_="form-control") }}
+            {% for error in form.phone_number.errors %}
+              <div class="alert alert-danger" role="alert", style="color:red">
+                {{ error }}
+              </div>
+            {% endfor %}
+          </div>
+          <div class="mb-3">
+            {{ form.theme.label(class_="form-label") }}<br>
+            {{ form.theme(class_="form-control") }}
+            {% for error in form.theme.errors %}
+              <div class="alert alert-danger" role="alert", style="color:red">
+                {{ error }}
+              </div>
+            {% endfor %}
+          </div>
+          <div class="mb-3">
+            {{ form.message.label(class_="form-label") }}<br>
+            {{ form.message(class_="form-control", rows="4") }}
+            {% for error in form.message.errors %}
+              <div class="alert alert-danger" role="alert", style="color:red">
+                {{ error }}
+              </div>
+           {% endfor %}
+          </div>
+          <div class="mb-3">
+            {{ form.submit(class_="btn btn-primary", id="submitButton") }}
+          </div>
+          <button class="btn btn-primary" type="button" id="loadingButton" disabled style="display: none;">
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            Загрузка...
+          </button>
+          {% for message in get_flashed_messages() %}
+            <div style="color: red;">{{ message }}</div>
+          {% endfor %}
+        </form>
+        </div>
+      </div>
   </div>
-  <div>
-    <h2>Форма для обратной связи</h2>
-    <form action="{{ url_for('main.contacts_send_mail') }}" method="post">
-    <div>
-      {{ form.hidden_tag() }}
-      <p>
-        {{ form.name.label }}<br>
-        {{ form.name }}
-        {% for error in form.name.errors %}
-          <div class="alert alert-danger" role="alert", style="color:red">
-            {{ error }}
-          </div>
-        {% endfor %}
-      </p>
-      <p>
-        {{ form.email.label }}<br>
-        {{ form.email }}
-        {% for error in form.email.errors %}
-          <div class="alert alert-danger" role="alert", style="color:red">
-            {{ error }}
-          </div>
-        {% endfor %}
-      </p>
-      <p>
-        {{ form.phone_number.label }}<br>
-        {{ form.phone_number }}
-        {% for error in form.phone_number.errors %}
-          <div class="alert alert-danger" role="alert", style="color:red">
-            {{ error }}
-          </div>
-        {% endfor %}
-      </p>
-      <p>
-        {{ form.theme.label }}<br>
-        {{ form.theme }}
-        {% for error in form.theme.errors %}
-          <div class="alert alert-danger" role="alert", style="color:red">
-            {{ error }}
-          </div>
-        {% endfor %}
-      </p>
-      <p>
-        {{ form.message.label }}<br>
-        {{ form.message }}
-        {% for error in form.message.errors %}
-          <div class="alert alert-danger" role="alert", style="color:red">
-            {{ error }}
-          </div>
-        {% endfor %}
-      </p>
-      <p>
-        {{ form.submit }}
-      </p>
-    </div>
-    {% for message in get_flashed_messages() %}
-      <div style="color: red;">{{ message }}</div>
-    {% endfor %}
-    </form>
-  </div>
+{% endblock %}
+{% block scripts %}
+  <script src="{{ url_for('static', filename='js/anim_button.js') }}"></script>
 {% endblock %}

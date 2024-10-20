@@ -1,43 +1,76 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{{ url_for('static', filename='img/work_img/favicon.ico') }}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    {% block styles %}
+    {% endblock %}
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <title>
       {% block title %}
-        
       {% endblock %}
     </title>
-    
-    {% block styles %}
-    {% endblock %}
   </head>
   <body>
-    <header>
-      {% block header %}
-        <a href="{{ url_for('main.index') }}">Главная</a>
-        <a href="{{ url_for('main.contacts') }}">Контакты</a>
-        <a href="{{ url_for('main.more_info') }}">О магазине</a>
-        <a href="{{ url_for('news.index') }}">Новости</a>
-        <a href="{{ url_for('main.sell_and_by') }}">Доставка и оплата</a>
-        <a href="{{ url_for('basket.index') }}">Корзина</a>
-        <h1>Welcome to My Website</h1>
-      {% endblock %}
-    </header>
-    
-    <main>
-      {% block content %}
-      {% endblock %}
-    </main>
-    
-    <footer>
-      {% block footer %}
-        <p><a href="https://github.com/KarasevMaksim" target="_blank">Developer by: Karasev Maksim</a></p>
-      {% endblock %}
-    </footer>
-
+    <div class=d-flex-wrapper>
+      <div class="container">
+        <header id="up" class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+          <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+            <svg class="bi me-2" width="40" height="32">
+              <image href="{{ url_for('static', filename='img/work_img/logo.png') }}" width="45" height="35"/>
+            </svg>
+            <span class="fs-4">Tomato Online Shop</span>
+          </a>
+          <ul class="nav nav-pills">
+            <li class="nav-item">
+              <a href="{{ url_for('main.index') }}" class="nav-link {{ 'active' if active_page == 'main.index' else '' }}" aria-current="page">Главная</a>
+            </li>
+            <li class="nav-item">
+              <a href="{{ url_for('main.contacts') }}" class="nav-link {{ 'active' if active_page == 'main.contacts' else '' }}">Контакты</a>
+            </li>
+            <li class="nav-item">
+              <a href="{{ url_for('main.more_info') }}" class="nav-link {{ 'active' if active_page == 'main.more_info' else '' }}">О магазине</a>
+            </li>
+            <li class="nav-item">
+              <a href="{{ url_for('news.index') }}" class="nav-link {{ 'active' if active_page == 'news.index' else '' }}">Новости</a>
+            </li>
+            <li class="nav-item">
+              <a href="{{ url_for('main.sell_and_by') }}" class="nav-link {{ 'active' if active_page == 'main.sell_and_by' else '' }}">Доставка и оплата</a>
+            </li>
+            <li class="nav-item">
+              <a href="{{ url_for('basket.index') }}" class="nav-link {{ 'active' if active_page == 'basket.index' else '' }}">Корзина</a>
+            </li>
+          </ul>
+          {% block header %}
+          {% endblock %}
+        </header>
+      </div>
+      <div class="b-example-divider"></div>
+      <main class="flex-grow-1">
+        <div class="container">
+          {% block content %}
+          {% endblock %}
+        </div>
+      </main>
+      <footer class="bg-light py-5">
+        <div class="container d-flex flex-column flex-sm-row justify-content-between py-4 my-4 border-top">
+          <p>&copy; 2024 Tomato online shop.</p>
+          <p><a href="https://github.com/KarasevMaksim" target="_blank">Developer by: Karasev Maksim</a></p>
+        </div>
+        {% block footer %}
+        {% endblock %}
+      </footer>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     {% block scripts %}
     {% endblock %}
+    <div class="position-fixed bottom-0 end-0 p-3">
+      <a href="#up">
+        <img src="{{ url_for('static', filename='img/work_img/up.png') }}" alt="not_found" style="width: 50px; height: 50px;">
+      </a>
+    </div>
   </body>
 </html>

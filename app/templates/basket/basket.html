@@ -10,74 +10,91 @@
     {{ message }}
   </div>
   {% endfor %}
-  {% for product, count in products_and_count %}
-    {% if product.is_active %}
-      <div>
-        <a href="{{ url_for('main.index') }}{{ product.id }}" target="_blank" rel="noopener noreferrer">      
-          <h2>{{ product.name }}</h2>
-        </a>
-        <p>Цена: {{ product.price }} р.</p>
-        <p class="price-element" style="display: none;">{{ product.price }}</p>
-        <form action="{{ url_for('basket.update_product_in_basket') }}" method="post">
-          <input type="number" step="1" min="1" max="100" value="{{ count }}" class="quantity" name="cost"/>
-          <input type="hidden" name="get_id" value="{{ product.id }}">
-          <input type="submit" value="Изменить количество">
-        </form>
-        <p class="total-cost">Общая стоимость: <span class="total-cost-value">{{ product.price | int * count | int }} р.</span></p>
-        <a href="{{ url_for('main.index') }}{{ product.id }}" target="_blank" rel="noopener noreferrer">      
-          <div>
-            <img src="{{ url_for('static', filename=product.img_link) }}" alt="product_img">
+  <div class="container">
+    <div class="row justify-content-between">
+      <div class="col-xl-4 col-md-6">
+        {% for product, count in products_and_count %}
+          {% if product.is_active %}
+            <div>
+              <a href="{{ url_for('main.index') }}{{ product.id }}" class="text-decoration-none text-dark" rel="noopener noreferrer">      
+                <h2>{{ product.name }}</h2>
+              </a>
+              <p>Цена: {{ product.price }} р.</p>
+              <p class="price-element" style="display: none;">{{ product.price }}</p>
+              <form action="{{ url_for('basket.update_product_in_basket') }}" method="post">
+                <div class="row justify-content-left">
+                  <div class="col-xl-4 col-md-4 col-sm-4">
+                    <input type="number" step="1" min="1" max="100" value="{{ count }}" class="quantity form-control" name="cost"/>
+                  </div>
+                    <input type="hidden" name="get_id" value="{{ product.id }}">
+                  <div class="col-xl-4 col-md-4 col-sm-4">
+                    <input class="btn btn-primary" type="submit" value="Изменить количество">
+                  </div>
+                </div>
+              </form> 
+              <p class="total-cost">Общая стоимость: <span class="total-cost-value">{{ product.price | int * count | int }} р.</span></p>
+              <a href="{{ url_for('main.index') }}{{ product.id }}" rel="noopener noreferrer">      
+                <div>
+                  <img src="{{ url_for('static', filename=product.img_link) }}" class="img-fluid" alt="product_img">
+                </div>
+              </a>
+              <form method="post" action="{{ url_for('basket.delete_product') }}">
+                <input type="hidden" name="get_id" value="{{ product.id }}">
+                <button class="btn btn-primary mt-2" type="submit">Удалить</button>
+              </form>
+            </div>
+            <hr>
+          {% endif %}
+        {% endfor %}
+      </div>
+      <div class="col-xl-4 col-md-6">
+        <div>
+          <p class="h2" id="total-cost-all-products">Итого: <span id="total-cost-all-products-value">0 р.</span></p>
+        </div>
+        <h2>Оформить Заказ!</h2>
+        <form method="post" action="{{ url_for('basket.by_basket') }}" id="myForm" onsubmit="handleSubmit(event)">
+          {{ form.hidden_tag() }}
+          <div class="mb-3">
+            {{ form.name.label(class_="form-label") }}<br>
+            {{ form.name(class_="form-control") }}
+            {% for error in form.name.errors %}
+              <div class="alert alert-danger" role="alert", style="color:red">
+                {{ error }}
+              </div>
+            {% endfor %}
           </div>
-        </a>
-        <form method="post" action="{{ url_for('basket.delete_product') }}">
-          <input type="hidden" name="get_id" value="{{ product.id }}">
-          <button type="submit">Удалить</button>
+          <div class="mb-3">
+            {{ form.email.label(class_="form-label") }}<br>
+            {{ form.email(class_="form-control") }}
+            {% for error in form.email.errors %}
+              <div class="alert alert-danger" role="alert", style="color:red">
+                {{ error }}
+              </div>
+            {% endfor %}
+          </div>
+          <div class="mb-3">
+            {{ form.phone_number.label(class_="form-label") }}<br>
+            {{ form.phone_number(class_="form-control") }}
+            {% for error in form.phone_number.errors %}
+              <div class="alert alert-danger" role="alert", style="color:red">
+                {{ error }}
+              </div>
+            {% endfor %}
+          </div class="mb-3">
+          <div>
+            <a href="{{ url_for('main.sell_and_by') }}">Перед заказом ознакомьтесь с условиями "Оплаты и Доставки!</a>
+            <div class="mb-3">
+              {{ form.submit(class_="btn btn-primary mt-2", id="submitButton") }}
+            </div>
+            <button class="btn btn-primary" type="button" id="loadingButton" disabled style="display: none;">
+              <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+              Загрузка...
+            </button>
+          </div>
         </form>
       </div>
-    {% endif %}
-  {% endfor %}
-  <div>
-    <p id="total-cost-all-products">Итого: <span id="total-cost-all-products-value">0 р.</span></p>
-    <div>
-      <h2>Оформить Заказ!</h2>
-      <form method="post" action="{{ url_for('basket.by_basket') }}">
-        {{ form.hidden_tag() }}
-        <p>
-          {{ form.name.label }}<br>
-          {{ form.name }}
-          {% for error in form.name.errors %}
-            <div class="alert alert-danger" role="alert", style="color:red">
-              {{ error }}
-            </div>
-          {% endfor %}
-        </p>
-        <p>
-          {{ form.email.label }}<br>
-          {{ form.email }}
-          {% for error in form.email.errors %}
-            <div class="alert alert-danger" role="alert", style="color:red">
-              {{ error }}
-            </div>
-          {% endfor %}
-        </p>
-        <p>
-          {{ form.phone_number.label }}<br>
-          {{ form.phone_number }}
-          {% for error in form.phone_number.errors %}
-            <div class="alert alert-danger" role="alert", style="color:red">
-              {{ error }}
-            </div>
-          {% endfor %}
-        </p>
-        <div>
-          <a href="{{ url_for('main.sell_and_by') }}">Перед заказом ознакомьтесь с условиями "Оплаты и Доставки!</a>
-        <p>
-          {{ form.submit }}
-        </p>
-      </form>
     </div>
   </div>
-
 {% endblock %}
 
 {% block scripts %}
