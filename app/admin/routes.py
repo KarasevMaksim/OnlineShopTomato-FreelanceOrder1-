@@ -11,7 +11,7 @@ from app.admin import bp
 from flask_login import (
     current_user, login_user, logout_user, login_required
 )
-from app import db, login
+from app import db
 from app.models import (
     Sections, SubSections, Users, Products, News, Contacts, About, SellAndBy,
     HistorySales

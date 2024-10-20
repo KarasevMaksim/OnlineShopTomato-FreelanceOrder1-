@@ -1,9 +1,8 @@
 import json
 from flask import (
-    render_template, url_for, request, jsonify, make_response, redirect, abort,
-    flash, session
+    render_template, url_for, request, jsonify, make_response, redirect,
+    flash
 )
-import sqlalchemy as sa
 from app.models import (
     Products, Sections, SubSections, Contacts, About, SellAndBy, News
 )

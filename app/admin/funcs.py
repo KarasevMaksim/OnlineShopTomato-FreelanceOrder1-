@@ -2,7 +2,7 @@ import os
 import shutil
 import secrets
 
-from flask import current_app, url_for
+from flask import current_app
 from werkzeug.utils import secure_filename
 from PIL import Image
 from urllib.parse import unquote

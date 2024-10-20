@@ -1,10 +1,10 @@
 import json
 
 from flask import (
-    render_template, url_for, request, jsonify, make_response, redirect, abort,
+    render_template, url_for, request, make_response, redirect, abort,
     flash
 )
-from app.models import Products, Sections, HistorySales, HistoryProducts
+from app.models import Products, HistorySales, HistoryProducts
 from app import db
 from app.basket import bp
 from app.email import send_mail, msg_basket_for_admin, msg_basket_for_user

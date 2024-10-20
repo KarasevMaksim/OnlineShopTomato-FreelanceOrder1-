@@ -1,18 +1,11 @@
-import re
-
 from flask_wtf import FlaskForm
 from wtforms import (
-    StringField, PasswordField, BooleanField, SelectField, SubmitField,
+    StringField, SelectField, SubmitField,
     TextAreaField, TelField, EmailField
 )
 from wtforms.validators import (
-    ValidationError, DataRequired, Length, Regexp, Optional, Email
+    DataRequired, Length, Regexp, Email
 )
-from app import db
-from app.models import Users, Sections, SubSections, Products
-from config import Config
-from flask_wtf.file import FileAllowed, FileRequired
-
 
 
 class ShowProductsForm(FlaskForm):
