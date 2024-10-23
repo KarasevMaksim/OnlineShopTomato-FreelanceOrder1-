@@ -101,6 +101,25 @@ def admin():
         form2=form2
     )
     
+@bp.route('switch-basket', methods=['POST'])
+@login_required
+def switch_basket():
+    if not current_user.is_admin:
+        return abort(403)
+    
+    with open('switch.json', encoding='utf-8') as file:
+        check_data = json.load(file)
+    
+    if int(check_data['check_on_or_off_basket']):
+        check_data['check_on_or_off_basket'] = '0'
+    else:
+        check_data['check_on_or_off_basket'] = '1'
+    
+    with open('switch.json', 'w', encoding='utf-8') as file:
+        json.dump(check_data, file)
+    
+    return redirect(url_for('admin.admin'))
+    
     
 @bp.route('/get_sub_sections', methods=['POST'])
 @login_required
