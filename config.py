@@ -13,3 +13,4 @@ class Config:
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
 
     DOMAIN = os.environ.get('DOMAIN')
+    NEW_DOMAIN2 = os.environ.get('NEW_DOMAIN2')
