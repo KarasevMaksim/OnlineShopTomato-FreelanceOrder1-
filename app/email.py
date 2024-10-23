@@ -32,7 +32,7 @@ def create_dop_msg(item):
             Под Категория: {item['sub_section']}<br>
             Ссылка на товар: {item['link']}<br>
             <div>
-              <img src="{item['img_link']}" alt="img_not_found">
+              <img src="{item['img_link']}" alt="img_not_found" style="width: 300px; height: auto;">
             </div>
           </p>
           <hr>

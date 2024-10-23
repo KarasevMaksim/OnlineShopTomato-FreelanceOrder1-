@@ -27,6 +27,10 @@ def admin():
     if not current_user.is_admin:
         return abort(403)
     
+    with open('switch.json', encoding='utf-8') as file:
+        data = json.load(file)
+    basket_status= int(data['check_on_or_off_basket'])
+    
     sections_item = Sections.query.all()
     sections = [(i.name, i.name.capitalize()) for i in sections_item]
     if sections_item:
@@ -98,8 +102,28 @@ def admin():
         'admin/admin.html',
         show_products = show_products,
         form=form,
-        form2=form2
+        form2=form2,
+        basket_status=basket_status
     )
+    
+@bp.route('switch-basket', methods=['POST'])
+@login_required
+def switch_basket():
+    if not current_user.is_admin:
+        return abort(403)
+    
+    with open('switch.json', encoding='utf-8') as file:
+        check_data = json.load(file)
+    
+    if int(check_data['check_on_or_off_basket']):
+        check_data['check_on_or_off_basket'] = '0'
+    else:
+        check_data['check_on_or_off_basket'] = '1'
+    
+    with open('switch.json', 'w', encoding='utf-8') as file:
+        json.dump(check_data, file)
+    
+    return redirect(url_for('admin.admin'))
     
     
 @bp.route('/get_sub_sections', methods=['POST'])

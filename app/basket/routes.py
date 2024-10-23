@@ -82,6 +82,13 @@ def update_product_in_basket():
 
 @bp.route('by-basket', methods=['POST'])
 def by_basket():
+    with open('switch.json', encoding='utf-8') as file:
+        data = json.load(file)
+        status_basket = int(data['check_on_or_off_basket'])
+        if not status_basket:
+            flash("Покупка товаров временно не возможна!")
+            return redirect(url_for('basket.index'))
+
     form = PlaceAnOrder()
     def query_products(p_id, count):
         product = Products.query.filter(Products.id == p_id).first()
