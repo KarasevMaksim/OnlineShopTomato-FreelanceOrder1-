@@ -100,8 +100,8 @@ def by_basket():
            'total': int(count) * int(product.price),
            'section': product.section.name,
            'sub_section': product.sub_section.name,
-           'link': f'{Config.NEW_DOMAIN2}{product.id}',
-           'img_link': Config.NEW_DOMAIN2[:len(Config.NEW_DOMAIN2) - 1] + url_for(
+           'link': f'{Config.NEW_DOMAIN2}/{product.id}',
+           'img_link': Config.NEW_DOMAIN2.rstrip('/') + url_for(
                'static', filename=product.img_link
                )
         }
