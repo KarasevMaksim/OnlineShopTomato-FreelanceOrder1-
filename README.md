@@ -100,7 +100,7 @@ Both services are configured to operate on the same network and have dependencie
    ```sql
    USE name_db;
    INSERT INTO user (name, password, is_admin)
-   VALUES ('admin', 'ваш_хешированный_пароль', 1);
+   VALUES ('admin', 'your_hashed_password', 1);
    ```
 
    **To generate the password hash, use Python:**
