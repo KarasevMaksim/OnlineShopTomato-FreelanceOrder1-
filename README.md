@@ -1,3 +1,4 @@
+
 # Tomato Online Shop 🍅
 ## 🌐 [tomato-online-shop.ru](https://tomato-online-shop.ru)
 
@@ -40,55 +41,60 @@ An e-commerce platform for selling fresh vegetables, developed with Python Flask
 - **Deployment**: Docker
 ## 🚀 Quick Start
 
-### Installation and Setup
+### 📦 Installation via Docker Compose
+Project Setup with Docker Compose and Environment Variables
+This project uses Docker Compose to manage multi-container Docker applications. Follow the instructions below to set up and run the project.
 
-1. **Build Docker Image**:
-   ```bash
-   docker build -t your_app_name:latest .
-   ```
-   **If you encounter requirements.txt installation errors**:
-   ```bash
-   docker build --network=host -t your_app_name:latest .
-   ```
+### Prerequisites
+Ensure you have the following tools installed:
+- [Docker](https://www.docker.com/get-started)
+- [Docker Compose](https://docs.docker.com/compose/install/)
 
-2. **Create network for container communication and dir for volume**:
-   ```bash
-   docker network create your_network_name
-   mkdir -p ~/mysql_data
-   mkdir -p ~/images
-   ```
+### Setting Up Environment Variables
 
-3. **Launch MySQL Container**:
-   ```bash
-   docker run --name mysql -d \
-     -e MYSQL_RANDOM_ROOT_PASSWORD=yes \
-     -e MYSQL_DATABASE=name_db \
-     -e MYSQL_USER=name_user_db \
-     -e MYSQL_PASSWORD=password_db \
-     --network your_network_name \
-     -v ~/mysql_data:/var/lib/mysql \
-     mysql:latest
-   ```
+1. Create a `.env` file in the root directory of the project.
+2. Add the following environment variables to the `.env` file, replacing the values with your own:
 
-4. **Launch App**:
-   ```bash
-   docker run --name yoru_app_name -d -p 8000:5000 --rm \
-     -e SECRET_KEY=your_secret_key_here \
-     -e MAIL_SERVER=smtp.yandex.ru \
-     -e MAIL_PORT=587 \
-     -e MAIL_USE_TLS=1 \
-     -e MAIL_USERNAME=your_email@yandex.ru \
-     -e MAIL_PASSWORD=your_smtp_password \
-     --network your_network_name \
-     -e DATABASE_URL=mysql+pymysql://name_user_db:password_db@mysql/name_db \
-     -e NEW_DOMAIN2=https://your_domain.ru \
-     -v ~/images:/app/static/img/products \
-     your_app_name:latest
-   ```
+### ⚙️ Environment Variables Configuration
 
-5. **Create admin user**:
+| Variable         | Default Value            | Description                       |
+| ---------------- | ------------------------ | --------------------------------- |
+| `MYSQL_DATABASE` | `your_db_name`           | MySQL database name               |
+| `MYSQL_USER`     | `your_db_user_name`      | MySQL username                    |
+| `MYSQL_PASSWORD` | `your_password`          | MySQL password                    |
+| `SECRET_KEY`     | `your_secret_key`        | Flask application secret key      |
+| `MAIL_SERVER`    | `smtp.yandex.ru`         | Yandex SMTP server address        |
+| `MAIL_PORT`      | `587`                    | Yandex SMTP port                  |
+| `MAIL_USE_TLS`   | `1`                      | Enable TLS encryption             |
+| `MAIL_USERNAME`  | `your_email_login`       | Yandex email login                |
+| `MAIL_PASSWORD`  | `your_smtp_password`     | Yandex smtp password/app password |
+| `DOMAIN`         | `https://your_domain.ru` | Primary domain for URL generation |
+| `NEW_DOMAIN2`    | `https://your_domain.ru` | Primary domain for URL generation |
+
+### Additional Notes:
+- The default port 8000 is mapped to the container's internal port 5000
+- Admin routes are protected and require authentication
+- SMTP configuration shown is for Yandex Mail (can be adjusted for other providers)
+
+### Running the Project with Docker Compose
+1. Open a terminal and navigate to the root directory of the project.
+2. Start the project using Docker Compose:
+```bash
+docker-compose up -d
+```
+This command will start all the services defined in the `docker-compose.yml` file in the background.
+
+### Description of the docker-compose.yml File
+The `docker-compose.yml` file defines two services:
+
+- `db`: A MySQL database service.
+- `app`: Your application service.
+
+Both services are configured to operate on the same network and have dependencies set so that the application starts only after the database is ready.
+
+### **Create admin user**:
    ```bash
-   docker exec -it mysql mysql -u name_user_db -p
+   docker exec -it mysql_container mysql -u name_user_db -p
    ```
    **In MySQL Client, execute:**
    ```sql
@@ -109,22 +115,4 @@ The application will be available at: [http://localhost:8000](http://localhost:8
 
 Admin panel: `/admin`
 
-## ⚙️ Configuration
 
-Key environment variables:
-
-| Variable        | Description                     |
-| --------------- | ------------------------------- |
-| `SECRET_KEY`    | Flask secret key                |
-| `DATABASE_URL`  | MySQL connection URL            |
-| `MAIL_SERVER`   | SMTP server address             |
-| `MAIL_PORT`     | SMTP port number                |
-| `MAIL_USE_TLS`  | Use TLS (1/0)                   |
-| `MAIL_USERNAME` | SMTP login credentials          |
-| `MAIL_PASSWORD` | SMTP password                   |
-| `NEW_DOMAIN2`   | Primary website domain          |
-
-### Additional Notes:
-- The default port 8000 is mapped to the container's internal port 5000
-- Admin routes are protected and require authentication
-- SMTP configuration shown is for Yandex Mail (can be adjusted for other providers)
